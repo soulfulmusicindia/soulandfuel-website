@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo Prep — Soul &amp; Fuel Media</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,500&family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  :root {
+    --ink: #15140f;
+    --parchment: #f3ede3;
+    --parchment-dim: #e7decf;
+    --ember: #c2542a;
+    --ember-soft: #d97a52;
+    --slate: #4b5560;
+    --bone: #faf8f4;
+    --font-soul: "Fraunces", Georgia, serif;
+    --font-fuel: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.5;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 48px 24px 100px; }
+  header.tool-head { margin-bottom: 36px; }
+  .eyebrow {
+    font-family: var(--font-fuel);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+  h1 {
+    font-family: var(--font-soul);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(28px, 4vw, 40px);
+    margin: 8px 0 10px;
+  }
+  .tool-head p { color: var(--slate); max-width: 560px; font-size: 15px; }
+  .note {
+    margin-top: 14px;
+    font-size: 13px;
+    background: var(--bone);
+    border: 1px solid rgba(21,20,15,0.1);
+    border-radius: 4px;
+    padding: 12px 16px;
+    color: var(--slate);
+  }
+
+  .card {
+    background: var(--bone);
+    border: 1px solid rgba(21,20,15,0.1);
+    border-radius: 6px;
+    padding: 28px;
+    margin-bottom: 26px;
+  }
+  .card h2 {
+    font-family: var(--font-fuel);
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin: 0 0 18px;
+  }
+
+  .field-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width: 700px) { .field-grid { grid-template-columns: 1fr 1fr; } }
+  label {
+    display: block;
+    font-family: var(--font-fuel);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 6px;
+  }
+  input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 10px 10px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    border: 1.5px solid rgba(21,20,15,0.18);
+    border-radius: 4px;
+    background: var(--parchment);
+    color: var(--ink);
+  }
+  input:focus, select:focus { outline: 2px solid var(--ember); outline-offset: 1px; }
+  .slug-preview { margin-top: 10px; font-size: 12px; color: var(--slate); font-family: var(--font-fuel); }
+  .slug-preview span { color: var(--ember); font-weight: 700; }
+
+  .dropzone {
+    border: 2px dashed rgba(21,20,15,0.25);
+    border-radius: 6px;
+    padding: 46px 20px;
+    text-align: center;
+    color: var(--slate);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .dropzone.is-drag { border-color: var(--ember); background: rgba(194,84,42,0.06); }
+  .dropzone strong { color: var(--ink); }
+  .dropzone input { display: none; }
+
+  details.advanced { margin-top: 16px; font-size: 13px; }
+  details.advanced summary { cursor: pointer; font-family: var(--font-fuel); font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--slate); }
+  .adv-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 14px; }
+  @media (max-width: 700px) { .adv-grid { grid-template-columns: 1fr; } }
+
+  .photo-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
+  .photo-item {
+    background: var(--parchment);
+    border: 1px solid rgba(21,20,15,0.1);
+    border-radius: 4px;
+    padding: 10px;
+  }
+  .photo-item img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 3px; display: block; background: var(--parchment-dim); }
+  .photo-item .meta { font-size: 12px; margin-top: 8px; color: var(--slate); }
+  .photo-item .meta strong { color: var(--ink); }
+  .photo-item .size-line { display: flex; justify-content: space-between; margin-top: 4px; }
+  .photo-item .reduction { color: var(--ember); font-weight: 600; }
+  .photo-item .row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; gap: 8px; }
+  .photo-item label.tall-label { display: flex; align-items: center; gap: 6px; font-size: 12px; text-transform: none; letter-spacing: 0; color: var(--ink); margin: 0; }
+  .photo-item input[type="checkbox"] { width: auto; }
+  .photo-item .remove-btn { background: none; border: none; color: var(--slate); font-size: 12px; cursor: pointer; text-decoration: underline; }
+  .photo-item .cover-label { display: flex; align-items: center; gap: 6px; font-size: 12px; text-transform: none; letter-spacing: 0; color: var(--ink); margin-top: 6px; }
+  .processing { font-size: 12px; color: var(--ember); font-family: var(--font-fuel); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-fuel);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--bone);
+    padding: 12px 20px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+  }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+
+  pre {
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 18px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-size: 12.5px;
+    line-height: 1.6;
+    font-family: "Space Grotesk", monospace;
+  }
+  .pre-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .pre-head h3 { font-family: var(--font-fuel); font-size: 13px; margin: 0; }
+  .copy-btn {
+    font-family: var(--font-fuel);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--parchment);
+    border: 1px solid rgba(21,20,15,0.2);
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  .copy-btn.copied { background: var(--ember); color: var(--bone); border-color: var(--ember); }
+
+  .steps { font-size: 14px; color: var(--slate); }
+  .steps li { margin-bottom: 6px; }
+  .empty-state { text-align: center; color: var(--slate); padding: 30px 0; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="tool-head">
+    <span class="eyebrow">Internal tool — not part of the public site</span>
+    <h1>Project photo prep</h1>
+    <p>Fill in the project details, drop in your full-size photos, and this page resizes and compresses them for the web right here in your browser. Nothing is uploaded anywhere — your originals never leave this device.</p>
+    <div class="note">Works best in Chrome, Edge, or Firefox. Keep this tab open while it processes — large 20MB photos take a few seconds each.</div>
+  </header>
+
+  <div class="card">
+    <h2>1. Project details</h2>
+    <div class="field-grid">
+      <div>
+        <label for="projTitle">Project name</label>
+        <input type="text" id="projTitle" placeholder="e.g. Greywell House">
+      </div>
+      <div>
+        <label for="projCategory">Type</label>
+        <select id="projCategory">
+          <option>Residential</option>
+          <option>Commercial</option>
+          <option>Hospitality</option>
+          <option>Studio</option>
+        </select>
+      </div>
+      <div>
+        <label for="projLocation">Location</label>
+        <input type="text" id="projLocation" placeholder="e.g. Coorg">
+      </div>
+      <div>
+        <label for="projYear">Year</label>
+        <input type="number" id="projYear" placeholder="2026">
+      </div>
+    </div>
+    <p class="slug-preview">Photo files and folder will use this slug: <span id="slugPreview">untitled-project</span></p>
+  </div>
+
+  <div class="card">
+    <h2>2. Add photos</h2>
+    <div class="dropzone" id="dropzone">
+      <strong>Drop photos here</strong>, or click to choose files<br>
+      JPG or PNG, any size — they'll be resized and compressed automatically.
+      <input type="file" id="fileInput" accept="image/*" multiple>
+    </div>
+
+    <details class="advanced">
+      <summary>Advanced settings (optional)</summary>
+      <div class="adv-grid">
+        <div>
+          <label for="maxDim">Max dimension (long edge)</label>
+          <select id="maxDim">
+            <option value="1200">1200px — smaller / faster</option>
+            <option value="1600" selected>1600px — recommended</option>
+            <option value="2000">2000px — higher detail</option>
+          </select>
+        </div>
+        <div>
+          <label for="quality">Compression quality</label>
+          <select id="quality">
+            <option value="0.7">70% — smallest file</option>
+            <option value="0.82" selected>82% — recommended</option>
+            <option value="0.9">90% — higher quality</option>
+          </select>
+        </div>
+        <div>
+          <label for="format">Output format</label>
+          <select id="format">
+            <option value="image/webp" selected>WebP — recommended</option>
+            <option value="image/jpeg">JPEG — most compatible</option>
+          </select>
+        </div>
+      </div>
+    </details>
+
+    <div class="photo-list" id="photoList"></div>
+    <div class="empty-state" id="emptyState">No photos added yet.</div>
+  </div>
+
+  <div class="card">
+    <h2>3. Download</h2>
+    <button class="btn" id="downloadZipBtn" disabled>Download all as ZIP &rarr;</button>
+    <p style="font-size:13px;color:var(--slate);margin-top:12px;">Unzip this into <code>images/projects/<span class="slugInline">your-slug</span>/</code> in your site folder, then upload that folder to GitHub alongside the rest of your site.</p>
+  </div>
+
+  <div class="card">
+    <h2>4. Paste this into <code>js/projects-data.js</code></h2>
+    <div class="pre-head">
+      <h3>New project entry</h3>
+      <button class="copy-btn" id="copyDataBtn">Copy</button>
+    </div>
+    <pre id="dataCode">// add at least one photo to generate this</pre>
+  </div>
+
+  <div class="card">
+    <h2>5. Paste this into <code>work-interior-architecture.html</code></h2>
+    <div class="pre-head">
+      <h3>New project card</h3>
+      <button class="copy-btn" id="copyCardBtn">Copy</button>
+    </div>
+    <pre id="cardCode">// add at least one photo to generate this</pre>
+  </div>
+
+  <div class="card">
+    <h2>Workflow recap</h2>
+    <ol class="steps">
+      <li>Fill in the project name, type, location and year above.</li>
+      <li>Drop in your full-size photos — tick "Tall" on one or two standout portrait shots if you want them to span two rows in the grid, like in your reference layout.</li>
+      <li>Pick which photo is the cover (used on the overview page).</li>
+      <li>Download the ZIP, unzip it, and upload the resulting folder into <code>images/projects/</code> in your site (alongside <code>css</code>, <code>js</code>, etc.) via GitHub's "Add file → Upload files."</li>
+      <li>Copy the two code blocks above into <code>js/projects-data.js</code> and <code>work-interior-architecture.html</code> respectively, and upload those two updated files too.</li>
+    </ol>
+  </div>
+
+</div>
+
+<script>
+let photos = []; // { id, blob, url, name, originalKB, newKB, tall, isCover }
+let nextId = 1;
+
+const els = {
+  title: document.getElementById("projTitle"),
+  category: document.getElementById("projCategory"),
+  location: document.getElementById("projLocation"),
+  year: document.getElementById("projYear"),
+  slugPreview: document.getElementById("slugPreview"),
+  dropzone: document.getElementById("dropzone"),
+  fileInput: document.getElementById("fileInput"),
+  photoList: document.getElementById("photoList"),
+  emptyState: document.getElementById("emptyState"),
+  maxDim: document.getElementById("maxDim"),
+  quality: document.getElementById("quality"),
+  format: document.getElementById("format"),
+  downloadZipBtn: document.getElementById("downloadZipBtn"),
+  dataCode: document.getElementById("dataCode"),
+  cardCode: document.getElementById("cardCode"),
+  copyDataBtn: document.getElementById("copyDataBtn"),
+  copyCardBtn: document.getElementById("copyCardBtn"),
+};
+
+els.year.value = new Date().getFullYear();
+
+function slugify(text) {
+  return (text || "untitled-project")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "") || "untitled-project";
+}
+
+function currentSlug() {
+  return slugify(els.title.value);
+}
+
+function fmtKB(bytes) {
+  return (bytes / 1024).toFixed(0) + " KB";
+}
+
+function ext() {
+  return els.format.value === "image/webp" ? "webp" : "jpg";
+}
+
+function updateSlugPreview() {
+  const s = currentSlug();
+  els.slugPreview.textContent = s;
+  document.querySelectorAll(".slugInline").forEach((el) => (el.textContent = s));
+}
+
+function resizeAndCompress(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const maxDim = parseInt(els.maxDim.value, 10);
+      let { width, height } = img;
+      const longest = Math.max(width, height);
+      if (longest > maxDim) {
+        const scale = maxDim / longest;
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => {
+          URL.revokeObjectURL(url);
+          if (!blob) {
+            reject(new Error("Could not compress image"));
+            return;
+          }
+          resolve(blob);
+        },
+        els.format.value,
+        parseFloat(els.quality.value)
+      );
+    };
+    img.onerror = () => reject(new Error("Could not load image"));
+    img.src = url;
+  });
+}
+
+async function handleFiles(fileList) {
+  const files = Array.from(fileList).filter((f) => f.type.startsWith("image/"));
+  for (const file of files) {
+    const id = nextId++;
+    const placeholder = { id, name: file.name, originalKB: file.size / 1024, processing: true, tall: false, isCover: photos.length === 0 };
+    photos.push(placeholder);
+    renderPhotoList();
+    try {
+      const blob = await resizeAndCompress(file);
+      const item = photos.find((p) => p.id === id);
+      if (item) {
+        item.blob = blob;
+        item.url = URL.createObjectURL(blob);
+        item.newKB = blob.size / 1024;
+        item.processing = false;
+      }
+    } catch (e) {
+      photos = photos.filter((p) => p.id !== id);
+    }
+    renderPhotoList();
+    renderCode();
+  }
+}
+
+function setCover(id) {
+  photos.forEach((p) => (p.isCover = p.id === id));
+  renderPhotoList();
+  renderCode();
+}
+
+function toggleTall(id) {
+  const p = photos.find((p) => p.id === id);
+  if (p) p.tall = !p.tall;
+  renderCode();
+}
+
+function removePhoto(id) {
+  photos = photos.filter((p) => p.id !== id);
+  if (photos.length && !photos.some((p) => p.isCover)) photos[0].isCover = true;
+  renderPhotoList();
+  renderCode();
+}
+
+function renderPhotoList() {
+  els.emptyState.style.display = photos.length ? "none" : "block";
+  els.downloadZipBtn.disabled = !photos.some((p) => p.blob);
+  els.photoList.innerHTML = photos
+    .map((p) => {
+      if (p.processing) {
+        return `<div class="photo-item"><div class="processing">Processing ${p.name}&hellip;</div></div>`;
+      }
+      const reduction = p.originalKB > 0 ? Math.round((1 - p.newKB / p.originalKB) * 100) : 0;
+      return `
+        <div class="photo-item">
+          <img src="${p.url}" alt="${p.name}">
+          <div class="meta">
+            <div class="size-line"><span>${fmtKB(p.originalKB * 1024)} &rarr; ${fmtKB(p.newKB * 1024)}</span><span class="reduction">-${reduction}%</span></div>
+          </div>
+          <div class="row">
+            <label class="tall-label"><input type="checkbox" ${p.tall ? "checked" : ""} onchange="toggleTall(${p.id})"> Tall</label>
+            <button class="remove-btn" onclick="removePhoto(${p.id})">Remove</button>
+          </div>
+          <label class="cover-label"><input type="radio" name="coverPhoto" ${p.isCover ? "checked" : ""} onchange="setCover(${p.id})"> Use as cover</label>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function renderCode() {
+  const ready = photos.filter((p) => p.blob);
+  if (!ready.length) {
+    els.dataCode.textContent = "// add at least one photo to generate this";
+    els.cardCode.textContent = "// add at least one photo to generate this";
+    return;
+  }
+  const slug = currentSlug();
+  const title = els.title.value || "Untitled project";
+  const category = els.category.value;
+  const location = els.location.value || "Location";
+  const year = els.year.value || new Date().getFullYear();
+  const e = ext();
+
+  const photoLines = ready
+    .map((p, i) => {
+      const fname = `${slug}-${i + 1}.${e}`;
+      return `      { src: "images/projects/${slug}/${fname}"${p.tall ? ", tall: true" : ""} }`;
+    })
+    .join(",\n");
+
+  els.dataCode.textContent =
+    `  {\n` +
+    `    slug: "${slug}",\n` +
+    `    title: "${title}",\n` +
+    `    category: "${category}",\n` +
+    `    location: "${location}",\n` +
+    `    year: "${year}",\n` +
+    `    cover: "images/projects/${slug}/${slug}-${(ready.findIndex((p) => p.isCover) + 1) || 1}.${e}",\n` +
+    `    photos: [\n${photoLines}\n    ]\n` +
+    `  },`;
+
+  const coverIndex = (ready.findIndex((p) => p.isCover) + 1) || 1;
+  els.cardCode.textContent =
+    `<a class="work-tile" href="project.html?slug=${slug}">\n` +
+    `  <img src="images/projects/${slug}/${slug}-${coverIndex}.${e}" alt="${title} — cover" loading="lazy">\n` +
+    `  <div class="work-tile-label">\n` +
+    `    <span class="kicker">${category} &middot; ${location}</span>\n` +
+    `    <h3>${title}</h3>\n` +
+    `    <span class="arrow">View project &rarr;</span>\n` +
+    `  </div>\n` +
+    `</a>`;
+}
+
+async function downloadZip() {
+  const ready = photos.filter((p) => p.blob);
+  if (!ready.length) return;
+  const slug = currentSlug();
+  const e = ext();
+  const zip = new JSZip();
+  ready.forEach((p, i) => {
+    zip.file(`${slug}-${i + 1}.${e}`, p.blob);
+  });
+  const blob = await zip.generateAsync({ type: "blob" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `${slug}-photos.zip`;
+  a.click();
+}
+
+els.title.addEventListener("input", () => {
+  updateSlugPreview();
+  renderCode();
+});
+[els.category, els.location, els.year, els.maxDim, els.quality, els.format].forEach((el) =>
+  el.addEventListener("change", renderCode)
+);
+
+els.dropzone.addEventListener("click", () => els.fileInput.click());
+els.fileInput.addEventListener("change", (e) => handleFiles(e.target.files));
+["dragenter", "dragover"].forEach((evt) =>
+  els.dropzone.addEventListener(evt, (e) => {
+    e.preventDefault();
+    els.dropzone.classList.add("is-drag");
+  })
+);
+["dragleave", "drop"].forEach((evt) =>
+  els.dropzone.addEventListener(evt, (e) => {
+    e.preventDefault();
+    els.dropzone.classList.remove("is-drag");
+  })
+);
+els.dropzone.addEventListener("drop", (e) => handleFiles(e.dataTransfer.files));
+
+els.downloadZipBtn.addEventListener("click", downloadZip);
+
+function copyText(elId, btn) {
+  navigator.clipboard.writeText(document.getElementById(elId).textContent).then(() => {
+    btn.textContent = "Copied!";
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = "Copy";
+      btn.classList.remove("copied");
+    }, 1500);
+  });
+}
+els.copyDataBtn.addEventListener("click", () => copyText("dataCode", els.copyDataBtn));
+els.copyCardBtn.addEventListener("click", () => copyText("cardCode", els.copyCardBtn));
+
+updateSlugPreview();
+renderPhotoList();
+</script>
+</body>
+</html>
