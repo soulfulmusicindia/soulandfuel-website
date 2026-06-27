@@ -31,7 +31,7 @@
       rotSpeed: rand(-0.003, 0.003),
       driftX: rand(-0.15, 0.15),
       driftY: rand(-0.1, 0.1),
-      opacity: rand(0.02, 0.06),
+      opacity: rand(0.024, 0.072),
       type: type < 0.3 ? "rect" : type < 0.5 ? "circle" : type < 0.7 ? "line" : type < 0.85 ? "cross" : "arc"
     });
   }
