@@ -150,23 +150,34 @@ body {
   .site-nav { height: auto; }
   .site-nav .wrap {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     padding-top: 16px;
     padding-bottom: 14px;
   }
+  .logo-mark { margin-bottom: 12px; }
   .nav-links {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
-    padding: 14px 0 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
     opacity: 1;
     pointer-events: auto;
     width: 100%;
   }
+  .nav-links li { display: flex; align-items: center; }
+  .nav-links li + li::before {
+    content: "|";
+    color: var(--ember);
+    font-weight: 700;
+    font-size: 13px;
+    margin: 0 10px;
+  }
   .nav-links a {
-    font-size: 12px;
+    font-size: 11px;
     padding: 4px 0;
   }
+  .nav-links a::after { display: none; }
+  .nav-links a.is-active { color: var(--ember); }
   .nav-toggle { display: none; }
 }
 @media (max-width: 540px) {
