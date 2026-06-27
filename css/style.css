@@ -181,12 +181,16 @@ body {
   .nav-toggle { display: none; }
 }
 @media (max-width: 540px) {
-  .wrap { padding: 0 18px; }
-  .project-grid { gap: 4px; padding-left: 0; padding-right: 0; }
+  .wrap { padding: 0 24px; }
+  .site-nav .wrap { padding-left: 24px; padding-right: 24px; }
+  .cat-hero { padding-left: 24px; padding-right: 24px; }
+  .project-grid { gap: 4px; }
   .video-grid { gap: 12px; }
   .editorial-grid { gap: 16px; }
   .project-list-grid { gap: 14px; }
-  .hero-content { padding: 0 18px 48px; }
+  .hero-content { padding: 0 24px 48px; }
+  .contact-band .wrap { padding: 0 24px; }
+  .site-footer .wrap { padding: 0 24px; }
 }
 
 /* ============================================================
