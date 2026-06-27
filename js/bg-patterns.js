@@ -4,15 +4,16 @@
   if (!bg) return;
 
   var canvas = document.createElement("canvas");
-  canvas.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;";
-  bg.appendChild(canvas);
+  document.body.appendChild(canvas);
+  canvas.style.cssText = "position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:0;";
   var ctx = canvas.getContext("2d");
 
   var w, h;
   function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
+    w = canvas.width = document.documentElement.clientWidth || window.innerWidth;
+    h = canvas.height = document.documentElement.clientHeight || window.innerHeight;
   }
+  setTimeout(resize, 50);
   resize();
   window.addEventListener("resize", resize);
 
