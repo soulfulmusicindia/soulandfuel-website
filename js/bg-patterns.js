@@ -1,4 +1,4 @@
-// Liquid gradient mesh — premium morphing colors
+// Living marble — animated stone veins with mouse distortion
 (function () {
   var bg = document.querySelector(".page-bg");
   if (!bg) return;
@@ -9,86 +9,143 @@
   var ctx = canvas.getContext("2d");
 
   var w, h;
+  var scale = 0.5;
   function resize() {
-    w = canvas.width = document.documentElement.clientWidth || window.innerWidth;
-    h = canvas.height = document.documentElement.clientHeight || window.innerHeight;
+    w = Math.floor((document.documentElement.clientWidth || window.innerWidth) * scale);
+    h = Math.floor((document.documentElement.clientHeight || window.innerHeight) * scale);
+    canvas.width = w;
+    canvas.height = h;
   }
-  setTimeout(resize, 50);
   resize();
+  setTimeout(resize, 100);
   window.addEventListener("resize", resize);
 
-  var mouse = { x: w / 2, y: h / 2, smoothX: w / 2, smoothY: h / 2 };
+  var mouse = { x: 0.5, y: 0.5, sx: 0.5, sy: 0.5 };
   document.addEventListener("mousemove", function (e) {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
+    mouse.x = e.clientX / (document.documentElement.clientWidth || window.innerWidth);
+    mouse.y = e.clientY / (document.documentElement.clientHeight || window.innerHeight);
   });
 
-  var time = 0;
+  // Simplex-inspired noise
+  var perm = new Uint8Array(512);
+  (function () {
+    var p = new Uint8Array(256);
+    for (var i = 0; i < 256; i++) p[i] = i;
+    for (var i = 255; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = p[i]; p[i] = p[j]; p[j] = t;
+    }
+    for (var i = 0; i < 512; i++) perm[i] = p[i & 255];
+  })();
 
-  var blobs = [
-    { cx: 0.25, cy: 0.3, r: 0.35, color: [210, 190, 165], speed: 0.4, phase: 0 },
-    { cx: 0.75, cy: 0.3, r: 0.35, color: [210, 190, 165], speed: 0.4, phase: Math.PI },
-    { cx: 0.5,  cy: 0.7, r: 0.4,  color: [194, 130, 90],  speed: 0.3, phase: 1.5 },
-    { cx: 0.2,  cy: 0.8, r: 0.3,  color: [180, 170, 155], speed: 0.35, phase: 2.5 },
-    { cx: 0.8,  cy: 0.8, r: 0.3,  color: [180, 170, 155], speed: 0.35, phase: Math.PI + 2.5 },
-    { cx: 0.5,  cy: 0.2, r: 0.3,  color: [194, 84, 42],   speed: 0.25, phase: 4 },
-    { cx: 0.35, cy: 0.5, r: 0.25, color: [160, 150, 135], speed: 0.5,  phase: 0.8 },
-    { cx: 0.65, cy: 0.5, r: 0.25, color: [160, 150, 135], speed: 0.5,  phase: Math.PI + 0.8 }
-  ];
+  function fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+  function lerp(a, b, t) { return a + t * (b - a); }
+  function grad(hash, x, y) {
+    var h = hash & 3;
+    var u = h < 2 ? x : y;
+    var v = h < 2 ? y : x;
+    return ((h & 1) ? -u : u) + ((h & 2) ? -v : v);
+  }
+
+  function noise(x, y) {
+    var X = Math.floor(x) & 255;
+    var Y = Math.floor(y) & 255;
+    x -= Math.floor(x);
+    y -= Math.floor(y);
+    var u = fade(x);
+    var v = fade(y);
+    var A = perm[X] + Y;
+    var B = perm[X + 1] + Y;
+    return lerp(
+      lerp(grad(perm[A], x, y), grad(perm[B], x - 1, y), u),
+      lerp(grad(perm[A + 1], x, y - 1), grad(perm[B + 1], x - 1, y - 1), u),
+      v
+    );
+  }
+
+  function fbm(x, y, octaves) {
+    var val = 0, amp = 0.5, freq = 1;
+    for (var i = 0; i < octaves; i++) {
+      val += amp * noise(x * freq, y * freq);
+      amp *= 0.5;
+      freq *= 2.1;
+    }
+    return val;
+  }
+
+  var time = 0;
+  var imgData = null;
 
   function draw() {
-    time += 0.006;
+    time += 0.004;
 
-    // Smooth mouse follow
-    mouse.smoothX += (mouse.x - mouse.smoothX) * 0.03;
-    mouse.smoothY += (mouse.y - mouse.smoothY) * 0.03;
+    mouse.sx += (mouse.x - mouse.sx) * 0.02;
+    mouse.sy += (mouse.y - mouse.sy) * 0.02;
 
-    var mouseNX = mouse.smoothX / w;
-    var mouseNY = mouse.smoothY / h;
+    if (!imgData || imgData.width !== w || imgData.height !== h) {
+      imgData = ctx.createImageData(w, h);
+    }
+    var data = imgData.data;
 
-    // Clear with base color
-    ctx.fillStyle = "rgb(243, 237, 227)";
-    ctx.fillRect(0, 0, w, h);
+    for (var py = 0; py < h; py++) {
+      for (var px = 0; px < w; px++) {
+        var nx = px / w * 3;
+        var ny = py / h * 3;
 
-    // Use globalCompositeOperation for rich blending
-    ctx.globalCompositeOperation = "multiply";
+        // Mouse distortion — warp the coordinate space near cursor
+        var mdx = nx / 3 - mouse.sx;
+        var mdy = ny / 3 - mouse.sy;
+        var mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+        if (mdist < 0.3) {
+          var warp = (1 - mdist / 0.3) * 0.4;
+          nx += mdx * warp;
+          ny += mdy * warp;
+        }
 
-    for (var i = 0; i < blobs.length; i++) {
-      var b = blobs[i];
+        // Domain warping — key to marble look
+        var warp1x = fbm(nx + time * 0.5, ny, 4);
+        var warp1y = fbm(nx, ny + time * 0.3, 4);
 
-      // Organic movement — lissajous curves + mouse influence
-      var bx = b.cx + Math.sin(time * b.speed + b.phase) * 0.12 + (mouseNX - 0.5) * 0.08;
-      var by = b.cy + Math.cos(time * b.speed * 0.7 + b.phase * 1.3) * 0.1 + (mouseNY - 0.5) * 0.06;
-      var br = b.r + Math.sin(time * b.speed * 0.5 + b.phase) * 0.06;
+        var warp2x = fbm(nx + warp1x * 2 + time * 0.3, ny + warp1y * 2, 4);
+        var warp2y = fbm(nx + warp1x * 2, ny + warp1y * 2 + time * 0.2, 4);
 
-      var px = bx * w;
-      var py = by * h;
-      var pr = br * Math.max(w, h);
+        var val = fbm(nx + warp2x * 1.5, ny + warp2y * 1.5, 5);
 
-      var grad = ctx.createRadialGradient(px, py, 0, px, py, pr);
-      grad.addColorStop(0, "rgba(" + b.color[0] + "," + b.color[1] + "," + b.color[2] + ", 0.15)");
-      grad.addColorStop(0.5, "rgba(" + b.color[0] + "," + b.color[1] + "," + b.color[2] + ", 0.06)");
-      grad.addColorStop(1, "rgba(243, 237, 227, 0)");
+        // Map to marble colors — parchment base with warm veins
+        val = val * 0.5 + 0.5;
 
-      ctx.beginPath();
-      ctx.fillStyle = grad;
-      ctx.arc(px, py, pr, 0, Math.PI * 2);
-      ctx.fill();
+        // Vein detection — sharp transitions become veins
+        var vein = Math.abs(Math.sin(val * 12 + warp2x * 6));
+        vein = Math.pow(vein, 3);
+
+        // Base: parchment (243, 237, 227)
+        // Veins: warm brown/ember tones
+        var baseR = 243, baseG = 237, baseB = 227;
+        var veinR = 200, veinG = 185, veinB = 168;
+        var deepR = 180, deepG = 155, deepB = 130;
+
+        var t1 = vein;
+        var t2 = (1 - vein) * val * 0.3;
+
+        var r = baseR - t1 * (baseR - veinR) - t2 * (baseR - deepR);
+        var g = baseG - t1 * (baseG - veinG) - t2 * (baseG - deepG);
+        var b = baseB - t1 * (baseB - veinB) - t2 * (baseB - deepB);
+
+        // Subtle ember in deep veins
+        var ember = Math.max(0, 1 - vein * 3) * val * 0.15;
+        r += ember * 30;
+        g -= ember * 10;
+        b -= ember * 15;
+
+        var idx = (py * w + px) * 4;
+        data[idx] = Math.max(0, Math.min(255, r));
+        data[idx + 1] = Math.max(0, Math.min(255, g));
+        data[idx + 2] = Math.max(0, Math.min(255, b));
+        data[idx + 3] = 255;
+      }
     }
 
-    // Mouse glow blob — warm ember
-    ctx.globalCompositeOperation = "screen";
-    var mGrad = ctx.createRadialGradient(mouse.smoothX, mouse.smoothY, 0, mouse.smoothX, mouse.smoothY, 200);
-    mGrad.addColorStop(0, "rgba(194, 84, 42, 0.035)");
-    mGrad.addColorStop(0.5, "rgba(217, 122, 82, 0.015)");
-    mGrad.addColorStop(1, "rgba(243, 237, 227, 0)");
-    ctx.beginPath();
-    ctx.fillStyle = mGrad;
-    ctx.arc(mouse.smoothX, mouse.smoothY, 200, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.globalCompositeOperation = "source-over";
-
+    ctx.putImageData(imgData, 0, 0);
     requestAnimationFrame(draw);
   }
 
