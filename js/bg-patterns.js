@@ -1,4 +1,4 @@
-// Living architectural mesh — 3D fabric grid with mouse interaction
+// Ambient light — warm floating orbs like light in an interior space
 (function () {
   var bg = document.querySelector(".page-bg");
   if (!bg) return;
@@ -16,145 +16,152 @@
   resize();
   window.addEventListener("resize", resize);
 
-  var mouse = { x: w / 2, y: h / 2 };
+  var mouse = { x: w / 2, y: h / 2, active: false };
   document.addEventListener("mousemove", function (e) {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
+    mouse.active = true;
   });
 
-  var cols = 28;
-  var rows = 22;
-  var spacing = Math.max(w, h) / Math.min(cols, rows);
+  function rand(a, b) { return Math.random() * (b - a) + a; }
+
+  // Light orbs — soft glowing circles like warm ambient light
+  var orbs = [];
+  for (var i = 0; i < 20; i++) {
+    orbs.push({
+      x: rand(0, w),
+      y: rand(0, h),
+      baseRadius: rand(60, 220),
+      radius: 0,
+      vx: rand(-0.3, 0.3),
+      vy: rand(-0.2, 0.2),
+      phase: rand(0, Math.PI * 2),
+      breathSpeed: rand(0.005, 0.015),
+      warm: Math.random() > 0.4
+    });
+  }
+
+  // Mouse trail particles
+  var particles = [];
+  var maxParticles = 40;
+
   var time = 0;
-  var focalLength = 300;
-
-  // Create grid points
-  var points = [];
-  for (var row = 0; row < rows; row++) {
-    for (var col = 0; col < cols; col++) {
-      points.push({
-        baseX: (col - cols / 2) * spacing,
-        baseY: (row - rows / 2) * spacing,
-        baseZ: 0,
-        x: 0, y: 0, z: 0,
-        sx: 0, sy: 0,
-        col: col, row: row
-      });
-    }
-  }
-
-  function project(x, y, z) {
-    var zOffset = z + 600;
-    if (zOffset < 1) zOffset = 1;
-    var scale = focalLength / zOffset;
-    return {
-      x: w / 2 + x * scale,
-      y: h / 2 + y * scale,
-      scale: scale
-    };
-  }
+  var lastMouse = { x: mouse.x, y: mouse.y };
 
   function draw() {
-    ctx.clearRect(0, 0, w, h);
-    time += 0.008;
+    time += 0.01;
 
-    var halfW = w / 2;
-    var halfH = h / 2;
-    var mouseOffsetX = (mouse.x - halfW) / halfW;
-    var mouseOffsetY = (mouse.y - halfH) / halfH;
+    // Soft fade instead of hard clear — creates trails
+    ctx.fillStyle = "rgba(243, 237, 227, 0.08)";
+    ctx.fillRect(0, 0, w, h);
 
-    // Update points with wave deformation
-    for (var i = 0; i < points.length; i++) {
-      var p = points[i];
-      var nx = p.col / cols;
-      var ny = p.row / rows;
-
-      // Multiple layered waves for organic movement
-      var wave1 = Math.sin(nx * 4 + time * 1.5) * Math.cos(ny * 3 + time * 1.2) * 80;
-      var wave2 = Math.sin(nx * 2.5 + ny * 3.5 + time * 0.8) * 50;
-      var wave3 = Math.cos(nx * 6 + time * 2) * Math.sin(ny * 5 + time * 1.7) * 30;
-      var ripple = Math.sin(Math.sqrt(Math.pow(nx - 0.5, 2) + Math.pow(ny - 0.5, 2)) * 8 - time * 2) * 40;
-
-      // Mouse influence — push points away in z
-      var dx = (p.baseX - (mouse.x - halfW) * 1.5);
-      var dy = (p.baseY - (mouse.y - halfH) * 1.5);
-      var dist = Math.sqrt(dx * dx + dy * dy);
-      var mouseWave = Math.max(0, 1 - dist / 400) * 120;
-
-      p.z = wave1 + wave2 + wave3 + ripple + mouseWave;
-
-      // Subtle symmetric x/y drift
-      p.x = p.baseX + Math.sin(ny * 3 + time) * 8 * mouseOffsetX;
-      p.y = p.baseY + Math.cos(nx * 3 + time) * 8 * mouseOffsetY;
-
-      // Tilt the whole grid based on mouse
-      var tiltX = mouseOffsetY * 0.3;
-      var tiltY = mouseOffsetX * -0.3;
-      var cosX = Math.cos(tiltX), sinX = Math.sin(tiltX);
-      var cosY = Math.cos(tiltY), sinY = Math.sin(tiltY);
-
-      var rx = p.x * cosY - p.z * sinY;
-      var rz1 = p.x * sinY + p.z * cosY;
-      var ry = p.y * cosX - rz1 * sinX;
-      var rz = p.y * sinX + rz1 * cosX;
-
-      var proj = project(rx, ry, rz);
-      p.sx = proj.x;
-      p.sy = proj.y;
-      p.depth = rz;
-      p.projScale = proj.scale;
-    }
-
-    // Draw connections
-    for (var row = 0; row < rows; row++) {
-      for (var col = 0; col < cols; col++) {
-        var idx = row * cols + col;
-        var p = points[idx];
-
-        var depthNorm = (p.depth + 200) / 400;
-        depthNorm = Math.max(0, Math.min(1, depthNorm));
-
-        // Color: mix ember and ink based on depth
-        var r = Math.round(21 + depthNorm * (194 - 21));
-        var g = Math.round(20 + depthNorm * (84 - 20));
-        var b = Math.round(15 + depthNorm * (42 - 15));
-        var alpha = 0.03 + depthNorm * 0.09;
-
-        // Horizontal connection
-        if (col < cols - 1) {
-          var next = points[idx + 1];
-          ctx.beginPath();
-          ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
-          ctx.lineWidth = 0.3 + depthNorm * 0.8;
-          ctx.moveTo(p.sx, p.sy);
-          ctx.lineTo(next.sx, next.sy);
-          ctx.stroke();
-        }
-
-        // Vertical connection
-        if (row < rows - 1) {
-          var below = points[idx + cols];
-          ctx.beginPath();
-          ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
-          ctx.lineWidth = 0.3 + depthNorm * 0.8;
-          ctx.moveTo(p.sx, p.sy);
-          ctx.lineTo(below.sx, below.sy);
-          ctx.stroke();
-        }
-
-        // Draw node dots at intersections
-        if ((col + row) % 3 === 0) {
-          var dotSize = 0.5 + depthNorm * 2;
-          ctx.beginPath();
-          ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (alpha * 1.5) + ")";
-          ctx.arc(p.sx, p.sy, dotSize, 0, Math.PI * 2);
-          ctx.fill();
-        }
+    // Spawn mouse particles on movement
+    if (mouse.active) {
+      var dx = mouse.x - lastMouse.x;
+      var dy = mouse.y - lastMouse.y;
+      var speed = Math.sqrt(dx * dx + dy * dy);
+      if (speed > 2 && particles.length < maxParticles) {
+        particles.push({
+          x: mouse.x,
+          y: mouse.y,
+          radius: rand(3, 12),
+          life: 1,
+          decay: rand(0.008, 0.02),
+          vx: rand(-1, 1),
+          vy: rand(-1, 1),
+          warm: Math.random() > 0.3
+        });
       }
+      lastMouse.x = mouse.x;
+      lastMouse.y = mouse.y;
     }
+
+    // Draw and update mouse particles
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.life -= p.decay;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= 0.98;
+      p.vy *= 0.98;
+
+      if (p.life <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+
+      var grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 2);
+      if (p.warm) {
+        grad.addColorStop(0, "rgba(194, 84, 42, " + (p.life * 0.25) + ")");
+        grad.addColorStop(1, "rgba(194, 84, 42, 0)");
+      } else {
+        grad.addColorStop(0, "rgba(217, 122, 82, " + (p.life * 0.2) + ")");
+        grad.addColorStop(1, "rgba(217, 122, 82, 0)");
+      }
+      ctx.beginPath();
+      ctx.fillStyle = grad;
+      ctx.arc(p.x, p.y, p.radius * 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Draw ambient light orbs
+    for (var i = 0; i < orbs.length; i++) {
+      var o = orbs[i];
+
+      // Breathing radius
+      o.phase += o.breathSpeed;
+      o.radius = o.baseRadius + Math.sin(o.phase) * (o.baseRadius * 0.3);
+
+      // Slow drift
+      o.x += o.vx;
+      o.y += o.vy;
+
+      // Mouse repulsion — orbs gently push away from cursor
+      var mdx = o.x - mouse.x;
+      var mdy = o.y - mouse.y;
+      var mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+      if (mdist < 300) {
+        var force = (1 - mdist / 300) * 0.8;
+        o.x += (mdx / mdist) * force;
+        o.y += (mdy / mdist) * force;
+      }
+
+      // Wrap edges softly
+      if (o.x < -o.radius) o.x = w + o.radius;
+      if (o.x > w + o.radius) o.x = -o.radius;
+      if (o.y < -o.radius) o.y = h + o.radius;
+      if (o.y > h + o.radius) o.y = -o.radius;
+
+      // Draw soft radial gradient
+      var grad = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.radius);
+      if (o.warm) {
+        grad.addColorStop(0, "rgba(194, 84, 42, 0.045)");
+        grad.addColorStop(0.4, "rgba(217, 122, 82, 0.025)");
+        grad.addColorStop(1, "rgba(243, 237, 227, 0)");
+      } else {
+        grad.addColorStop(0, "rgba(75, 85, 96, 0.035)");
+        grad.addColorStop(0.4, "rgba(75, 85, 96, 0.015)");
+        grad.addColorStop(1, "rgba(243, 237, 227, 0)");
+      }
+      ctx.beginPath();
+      ctx.fillStyle = grad;
+      ctx.arc(o.x, o.y, o.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Subtle vignette
+    var vignette = ctx.createRadialGradient(w / 2, h / 2, h * 0.3, w / 2, h / 2, h * 0.9);
+    vignette.addColorStop(0, "rgba(243, 237, 227, 0)");
+    vignette.addColorStop(1, "rgba(231, 222, 207, 0.15)");
+    ctx.fillStyle = vignette;
+    ctx.fillRect(0, 0, w, h);
 
     requestAnimationFrame(draw);
   }
+
+  // Initial clear
+  ctx.fillStyle = "rgba(243, 237, 227, 1)";
+  ctx.fillRect(0, 0, w, h);
 
   draw();
 })();
