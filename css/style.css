@@ -180,17 +180,18 @@ body {
   .nav-links a.is-active { color: var(--ember); }
   .nav-toggle { display: none; }
 }
-@media (max-width: 540px) {
+@media (max-width: 860px) {
   .wrap { padding: 0 24px; }
-  .site-nav .wrap { padding-left: 24px; padding-right: 24px; }
-  .cat-hero { padding-left: 24px; padding-right: 24px; }
+  .hero-content { padding: 0 24px 48px; }
+  .page-hero { padding-left: 24px; padding-right: 24px; }
+  .split-copy { padding-left: 24px; padding-right: 24px; }
+  .contact-grid { padding-left: 24px; padding-right: 24px; }
+}
+@media (max-width: 540px) {
   .project-grid { gap: 4px; }
   .video-grid { gap: 12px; }
   .editorial-grid { gap: 16px; }
   .project-list-grid { gap: 14px; }
-  .hero-content { padding: 0 24px 48px; }
-  .contact-band .wrap { padding: 0 24px; }
-  .site-footer .wrap { padding: 0 24px; }
 }
 
 /* ============================================================
