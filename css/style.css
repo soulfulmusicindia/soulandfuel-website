@@ -1012,7 +1012,18 @@ form.contact-form { display: flex; flex-direction: column; gap: 16px; }
    INSTAGRAM SECTION
    ============================================================ */
 .insta-section { padding: 0 0 110px; }
-.sk-instagram-feed .sk-badge { display: none !important; }
+.insta-section { position: relative; overflow: hidden; }
+.insta-section::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to bottom, transparent, var(--parchment) 40%);
+  z-index: 10;
+  pointer-events: none;
+}
 .insta-embed-placeholder {
   border: 1.5px dashed rgba(21,20,15,0.2);
   border-radius: 4px;
