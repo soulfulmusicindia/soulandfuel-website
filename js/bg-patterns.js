@@ -1,4 +1,4 @@
-// Flowing lines — smooth organic curves that drift like smoke
+// Symmetric 3D flowing lines — mirrored curves with depth
 (function () {
   var bg = document.querySelector(".page-bg");
   if (!bg) return;
@@ -8,90 +8,93 @@
   bg.appendChild(canvas);
   var ctx = canvas.getContext("2d");
 
-  var w, h;
+  var w, h, cx, cy;
   function resize() {
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
+    cx = w / 2;
+    cy = h / 2;
   }
   resize();
   window.addEventListener("resize", resize);
 
-  var lines = [];
-  var numLines = 8;
-
-  for (var i = 0; i < numLines; i++) {
-    var points = [];
-    var numPoints = 6;
-    for (var j = 0; j < numPoints; j++) {
-      points.push({
-        x: Math.random() * 1.4 - 0.2,
-        y: Math.random() * 1.4 - 0.2,
-        vx: (Math.random() - 0.5) * 0.0004,
-        vy: (Math.random() - 0.5) * 0.0003,
-        originX: 0,
-        originY: 0,
-        angle: Math.random() * Math.PI * 2,
-        radius: 0.02 + Math.random() * 0.06,
-        speed: 0.003 + Math.random() * 0.005
-      });
-      points[j].originX = points[j].x;
-      points[j].originY = points[j].y;
-    }
-    lines.push({
-      points: points,
-      opacity: 0.06 + Math.random() * 0.08,
-      width: 0.8 + Math.random() * 1.2,
-      color: Math.random() > 0.5 ? "194, 84, 42" : "21, 20, 15"
-    });
-  }
+  var time = 0;
+  var numLines = 12;
+  var numPoints = 80;
 
   function draw() {
     ctx.clearRect(0, 0, w, h);
+    time += 0.004;
 
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i];
-      var pts = line.points;
+    for (var i = 0; i < numLines; i++) {
+      var phase = (i / numLines) * Math.PI * 2;
+      var depth = 0.4 + Math.sin(time * 0.5 + phase) * 0.3;
+      var opacity = 0.04 + depth * 0.08;
+      var lineWidth = 0.5 + depth * 1.5;
 
-      // Update points — gentle circular orbiting around origin
-      for (var j = 0; j < pts.length; j++) {
-        var p = pts[j];
-        p.angle += p.speed;
-        p.x = p.originX + Math.cos(p.angle) * p.radius;
-        p.y = p.originY + Math.sin(p.angle * 0.7) * p.radius;
+      // Use ember for some lines, ink for others
+      var isEmber = i % 3 === 0;
+      var color = isEmber ? "194, 84, 42" : "21, 20, 15";
 
-        // Slowly drift the origin
-        p.originX += p.vx;
-        p.originY += p.vy;
-
-        // Soft bounce at edges
-        if (p.originX < -0.1 || p.originX > 1.1) p.vx *= -1;
-        if (p.originY < -0.1 || p.originY > 1.1) p.vy *= -1;
-      }
-
-      // Draw smooth curve through points
+      // Draw right half
       ctx.beginPath();
-      ctx.strokeStyle = "rgba(" + line.color + ", " + line.opacity + ")";
-      ctx.lineWidth = line.width;
+      ctx.strokeStyle = "rgba(" + color + ", " + opacity + ")";
+      ctx.lineWidth = lineWidth;
       ctx.lineCap = "round";
-      ctx.lineJoin = "round";
 
-      var sx = pts[0].x * w;
-      var sy = pts[0].y * h;
-      ctx.moveTo(sx, sy);
+      for (var j = 0; j < numPoints; j++) {
+        var t = j / numPoints;
+        var y = t * h;
 
-      for (var j = 0; j < pts.length - 1; j++) {
-        var xc = (pts[j].x * w + pts[j + 1].x * w) / 2;
-        var yc = (pts[j].y * h + pts[j + 1].y * h) / 2;
-        ctx.quadraticCurveTo(pts[j].x * w, pts[j].y * h, xc, yc);
+        var wave1 = Math.sin(t * 3 + time * 1.2 + phase) * (80 + i * 15) * depth;
+        var wave2 = Math.sin(t * 5 + time * 0.8 + phase * 1.5) * (40 + i * 8) * depth;
+        var wave3 = Math.sin(t * 1.5 + time * 0.5 + phase * 0.7) * (60 + i * 12) * depth;
+
+        var x = cx + wave1 + wave2 * 0.5 + wave3 * 0.3;
+
+        // 3D perspective — curves closer to center appear further away
+        var perspectiveScale = 0.7 + depth * 0.3;
+        x = cx + (x - cx) * perspectiveScale;
+        var py = cy + (y - cy) * perspectiveScale;
+
+        if (j === 0) ctx.moveTo(x, py);
+        else ctx.lineTo(x, py);
       }
-      ctx.quadraticCurveTo(
-        pts[pts.length - 1].x * w,
-        pts[pts.length - 1].y * h,
-        pts[pts.length - 1].x * w,
-        pts[pts.length - 1].y * h
-      );
+      ctx.stroke();
+
+      // Mirror — draw left half (symmetric)
+      ctx.beginPath();
+      ctx.strokeStyle = "rgba(" + color + ", " + opacity + ")";
+      ctx.lineWidth = lineWidth;
+      ctx.lineCap = "round";
+
+      for (var j = 0; j < numPoints; j++) {
+        var t = j / numPoints;
+        var y = t * h;
+
+        var wave1 = Math.sin(t * 3 + time * 1.2 + phase) * (80 + i * 15) * depth;
+        var wave2 = Math.sin(t * 5 + time * 0.8 + phase * 1.5) * (40 + i * 8) * depth;
+        var wave3 = Math.sin(t * 1.5 + time * 0.5 + phase * 0.7) * (60 + i * 12) * depth;
+
+        var x = cx - (wave1 + wave2 * 0.5 + wave3 * 0.3);
+
+        var perspectiveScale = 0.7 + depth * 0.3;
+        x = cx + (x - cx) * perspectiveScale;
+        var py = cy + (y - cy) * perspectiveScale;
+
+        if (j === 0) ctx.moveTo(x, py);
+        else ctx.lineTo(x, py);
+      }
       ctx.stroke();
     }
+
+    // Center axis glow line
+    ctx.beginPath();
+    ctx.strokeStyle = "rgba(194, 84, 42, 0.03)";
+    ctx.lineWidth = 1;
+    ctx.moveTo(cx, 0);
+    ctx.lineTo(cx, h);
+    ctx.stroke();
 
     requestAnimationFrame(draw);
   }
