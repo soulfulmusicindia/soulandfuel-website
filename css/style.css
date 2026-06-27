@@ -548,6 +548,26 @@ body {
 }
 
 /* ============================================================
+   ANIMATED BACKGROUNDS
+   ============================================================ */
+.page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.page-bg svg {
+  position: absolute;
+  width: 100%;
+  height: 200%;
+  top: 0;
+  opacity: 0.04;
+  will-change: transform;
+}
+.page-bg.bg-interior svg { stroke: var(--ink); fill: none; stroke-width: 0.5; }
+
+/* ============================================================
    SUBPAGES — category hero + gallery
    ============================================================ */
 .cat-hero {
