@@ -1,4 +1,4 @@
-// Light through blinds — sunlight filtering into a designed space
+// Liquid gradient mesh — premium morphing colors
 (function () {
   var bg = document.querySelector(".page-bg");
   if (!bg) return;
@@ -16,7 +16,7 @@
   resize();
   window.addEventListener("resize", resize);
 
-  var mouse = { x: w / 2, y: h / 2 };
+  var mouse = { x: w / 2, y: h / 2, smoothX: w / 2, smoothY: h / 2 };
   document.addEventListener("mousemove", function (e) {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
@@ -24,110 +24,69 @@
 
   var time = 0;
 
+  var blobs = [
+    { cx: 0.25, cy: 0.3, r: 0.35, color: [210, 190, 165], speed: 0.4, phase: 0 },
+    { cx: 0.75, cy: 0.3, r: 0.35, color: [210, 190, 165], speed: 0.4, phase: Math.PI },
+    { cx: 0.5,  cy: 0.7, r: 0.4,  color: [194, 130, 90],  speed: 0.3, phase: 1.5 },
+    { cx: 0.2,  cy: 0.8, r: 0.3,  color: [180, 170, 155], speed: 0.35, phase: 2.5 },
+    { cx: 0.8,  cy: 0.8, r: 0.3,  color: [180, 170, 155], speed: 0.35, phase: Math.PI + 2.5 },
+    { cx: 0.5,  cy: 0.2, r: 0.3,  color: [194, 84, 42],   speed: 0.25, phase: 4 },
+    { cx: 0.35, cy: 0.5, r: 0.25, color: [160, 150, 135], speed: 0.5,  phase: 0.8 },
+    { cx: 0.65, cy: 0.5, r: 0.25, color: [160, 150, 135], speed: 0.5,  phase: Math.PI + 0.8 }
+  ];
+
   function draw() {
-    ctx.clearRect(0, 0, w, h);
-    time += 0.003;
+    time += 0.006;
 
-    // Mouse influence on light angle
-    var mouseAngle = ((mouse.x / w) - 0.5) * 0.4;
-    var mouseWarmth = (mouse.y / h);
+    // Smooth mouse follow
+    mouse.smoothX += (mouse.x - mouse.smoothX) * 0.03;
+    mouse.smoothY += (mouse.y - mouse.smoothY) * 0.03;
 
-    // === Layer 1: Broad window light wash ===
-    var lightX = w * 0.3 + Math.sin(time * 0.5) * w * 0.15;
-    var lightW = w * 0.5;
-    var grad1 = ctx.createLinearGradient(lightX - lightW / 2, 0, lightX + lightW / 2, 0);
-    grad1.addColorStop(0, "rgba(243, 237, 227, 0)");
-    grad1.addColorStop(0.3, "rgba(217, 180, 140, 0.04)");
-    grad1.addColorStop(0.5, "rgba(230, 210, 180, 0.07)");
-    grad1.addColorStop(0.7, "rgba(217, 180, 140, 0.04)");
-    grad1.addColorStop(1, "rgba(243, 237, 227, 0)");
-    ctx.fillStyle = grad1;
+    var mouseNX = mouse.smoothX / w;
+    var mouseNY = mouse.smoothY / h;
+
+    // Clear with base color
+    ctx.fillStyle = "rgb(243, 237, 227)";
     ctx.fillRect(0, 0, w, h);
 
-    // === Layer 2: Venetian blind bands ===
-    var numBands = 12;
-    var bandAngle = 0.15 + mouseAngle + Math.sin(time * 0.7) * 0.05;
+    // Use globalCompositeOperation for rich blending
+    ctx.globalCompositeOperation = "multiply";
 
-    ctx.save();
-    ctx.translate(w / 2, h / 2);
-    ctx.rotate(bandAngle);
+    for (var i = 0; i < blobs.length; i++) {
+      var b = blobs[i];
 
-    for (var i = 0; i < numBands; i++) {
-      var y = (i - numBands / 2) * (h / (numBands - 2));
-      var bandH = h / (numBands * 1.8);
-      var breathe = Math.sin(time * 1.2 + i * 0.5) * 0.3 + 0.7;
-      var warmR = 230 + Math.sin(time + i) * 15;
-      var warmG = 200 + Math.sin(time * 0.8 + i) * 15;
-      var warmB = 160 + Math.sin(time * 0.6 + i) * 10;
-      var alpha = 0.025 * breathe + mouseWarmth * 0.015;
+      // Organic movement — lissajous curves + mouse influence
+      var bx = b.cx + Math.sin(time * b.speed + b.phase) * 0.12 + (mouseNX - 0.5) * 0.08;
+      var by = b.cy + Math.cos(time * b.speed * 0.7 + b.phase * 1.3) * 0.1 + (mouseNY - 0.5) * 0.06;
+      var br = b.r + Math.sin(time * b.speed * 0.5 + b.phase) * 0.06;
 
-      // Light band
-      var bandGrad = ctx.createLinearGradient(0, y - bandH, 0, y + bandH);
-      bandGrad.addColorStop(0, "rgba(" + Math.round(warmR) + "," + Math.round(warmG) + "," + Math.round(warmB) + ", 0)");
-      bandGrad.addColorStop(0.3, "rgba(" + Math.round(warmR) + "," + Math.round(warmG) + "," + Math.round(warmB) + "," + alpha + ")");
-      bandGrad.addColorStop(0.5, "rgba(" + Math.round(warmR) + "," + Math.round(warmG) + "," + Math.round(warmB) + "," + (alpha * 1.5) + ")");
-      bandGrad.addColorStop(0.7, "rgba(" + Math.round(warmR) + "," + Math.round(warmG) + "," + Math.round(warmB) + "," + alpha + ")");
-      bandGrad.addColorStop(1, "rgba(" + Math.round(warmR) + "," + Math.round(warmG) + "," + Math.round(warmB) + ", 0)");
+      var px = bx * w;
+      var py = by * h;
+      var pr = br * Math.max(w, h);
 
-      ctx.fillStyle = bandGrad;
-      ctx.fillRect(-w, y - bandH, w * 2, bandH * 2);
+      var grad = ctx.createRadialGradient(px, py, 0, px, py, pr);
+      grad.addColorStop(0, "rgba(" + b.color[0] + "," + b.color[1] + "," + b.color[2] + ", 0.15)");
+      grad.addColorStop(0.5, "rgba(" + b.color[0] + "," + b.color[1] + "," + b.color[2] + ", 0.06)");
+      grad.addColorStop(1, "rgba(243, 237, 227, 0)");
+
+      ctx.beginPath();
+      ctx.fillStyle = grad;
+      ctx.arc(px, py, pr, 0, Math.PI * 2);
+      ctx.fill();
     }
 
-    ctx.restore();
-
-    // === Layer 3: Shadow edges where blinds block light ===
-    ctx.save();
-    ctx.translate(w / 2, h / 2);
-    ctx.rotate(bandAngle);
-
-    for (var i = 0; i < numBands - 1; i++) {
-      var y = (i - numBands / 2 + 0.5) * (h / (numBands - 2));
-      var shadowH = 3 + Math.sin(time + i * 0.8) * 1;
-      var shadowAlpha = 0.02 + Math.sin(time * 0.9 + i) * 0.008;
-
-      ctx.fillStyle = "rgba(21, 20, 15, " + shadowAlpha + ")";
-      ctx.fillRect(-w, y - shadowH / 2, w * 2, shadowH);
-    }
-
-    ctx.restore();
-
-    // === Layer 4: Dust particles in the light ===
-    for (var i = 0; i < 30; i++) {
-      var px = (Math.sin(time * 0.3 + i * 7.3) * 0.5 + 0.5) * w;
-      var py = (Math.cos(time * 0.2 + i * 4.7) * 0.5 + 0.5) * h;
-      var pr = 1 + Math.sin(time * 2 + i) * 0.5;
-      var pAlpha = 0.04 + Math.sin(time + i * 2) * 0.025;
-
-      // Only show dust in light areas (center-ish)
-      var distFromCenter = Math.abs(px - lightX) / (lightW / 2);
-      if (distFromCenter < 1) {
-        pAlpha *= (1 - distFromCenter);
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(217, 180, 140, " + pAlpha + ")";
-        ctx.arc(px, py, pr, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    // === Layer 5: Mouse spotlight — like holding a light ===
-    var spotGrad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 250);
-    spotGrad.addColorStop(0, "rgba(240, 220, 190, 0.06)");
-    spotGrad.addColorStop(0.4, "rgba(230, 200, 160, 0.03)");
-    spotGrad.addColorStop(1, "rgba(243, 237, 227, 0)");
-    ctx.fillStyle = spotGrad;
+    // Mouse glow blob — warm ember
+    ctx.globalCompositeOperation = "screen";
+    var mGrad = ctx.createRadialGradient(mouse.smoothX, mouse.smoothY, 0, mouse.smoothX, mouse.smoothY, 200);
+    mGrad.addColorStop(0, "rgba(194, 84, 42, 0.035)");
+    mGrad.addColorStop(0.5, "rgba(217, 122, 82, 0.015)");
+    mGrad.addColorStop(1, "rgba(243, 237, 227, 0)");
     ctx.beginPath();
-    ctx.arc(mouse.x, mouse.y, 250, 0, Math.PI * 2);
+    ctx.fillStyle = mGrad;
+    ctx.arc(mouse.smoothX, mouse.smoothY, 200, 0, Math.PI * 2);
     ctx.fill();
 
-    // Warm edge where mouse light hits "wall"
-    var edgeGlow = ctx.createRadialGradient(mouse.x, mouse.y, 180, mouse.x, mouse.y, 280);
-    edgeGlow.addColorStop(0, "rgba(194, 84, 42, 0)");
-    edgeGlow.addColorStop(0.5, "rgba(194, 84, 42, 0.015)");
-    edgeGlow.addColorStop(1, "rgba(194, 84, 42, 0)");
-    ctx.fillStyle = edgeGlow;
-    ctx.beginPath();
-    ctx.arc(mouse.x, mouse.y, 280, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.globalCompositeOperation = "source-over";
 
     requestAnimationFrame(draw);
   }
