@@ -557,15 +557,12 @@ body {
   pointer-events: none;
   overflow: hidden;
 }
-.page-bg svg {
-  position: absolute;
+.page-bg canvas {
+  position: fixed;
+  top: 0; left: 0;
   width: 100%;
-  height: 200%;
-  top: 0;
-  opacity: 0.04;
-  will-change: transform;
+  height: 100%;
 }
-.page-bg.bg-interior svg { stroke: var(--ink); fill: none; stroke-width: 0.5; }
 
 /* ============================================================
    SUBPAGES — category hero + gallery
