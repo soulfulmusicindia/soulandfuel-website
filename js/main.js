@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
         card.className = "video-grid-item reveal is-visible";
         card.innerHTML =
           '<div class="thumb-wrap">' +
-            '<img src="https://img.youtube.com/vi/' + v.id + '/mqdefault.jpg" alt="' + v.title.replace(/"/g, "&quot;") + '" loading="lazy">' +
+            '<img src="https://img.youtube.com/vi/' + v.id + '/maxresdefault.jpg" alt="' + v.title.replace(/"/g, "&quot;") + '" loading="lazy">' +
             '<span class="play-icon">' + playSvg + '</span>' +
           '</div>' +
           '<div class="vid-iframe-wrap"></div>' +
