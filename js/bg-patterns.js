@@ -1,4 +1,4 @@
-// Constellation network — connected particles with mouse magnetism
+// Light through blinds — sunlight filtering into a designed space
 (function () {
   var bg = document.querySelector(".page-bg");
   if (!bg) return;
@@ -8,156 +8,126 @@
   bg.appendChild(canvas);
   var ctx = canvas.getContext("2d");
 
-  var w, h, dpr;
+  var w, h;
   function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = window.innerWidth;
-    h = window.innerHeight;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width = w + "px";
-    canvas.style.height = h + "px";
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
   }
   resize();
   window.addEventListener("resize", resize);
 
-  var mouse = { x: -1000, y: -1000 };
+  var mouse = { x: w / 2, y: h / 2 };
   document.addEventListener("mousemove", function (e) {
     mouse.x = e.clientX;
     mouse.y = e.clientY;
   });
-  document.addEventListener("mouseleave", function () {
-    mouse.x = -1000;
-    mouse.y = -1000;
-  });
 
-  function rand(a, b) { return Math.random() * (b - a) + a; }
-
-  var connectDist = 140;
-  var mouseDist = 200;
-  var count = Math.min(Math.floor((w * h) / 8000), 150);
-
-  var dots = [];
-  for (var i = 0; i < count; i++) {
-    dots.push({
-      x: rand(0, w),
-      y: rand(0, h),
-      vx: rand(-0.4, 0.4),
-      vy: rand(-0.4, 0.4),
-      r: rand(1.2, 2.8),
-      layer: Math.random(),
-      pulse: rand(0, Math.PI * 2),
-      pulseSpeed: rand(0.01, 0.03)
-    });
-  }
+  var time = 0;
 
   function draw() {
     ctx.clearRect(0, 0, w, h);
+    time += 0.003;
 
-    // Update dots
-    for (var i = 0; i < dots.length; i++) {
-      var d = dots[i];
-      d.pulse += d.pulseSpeed;
+    // Mouse influence on light angle
+    var mouseAngle = ((mouse.x / w) - 0.5) * 0.4;
+    var mouseWarmth = (mouse.y / h);
 
-      // Mouse magnetism — attract gently
-      var mdx = mouse.x - d.x;
-      var mdy = mouse.y - d.y;
-      var mDist = Math.sqrt(mdx * mdx + mdy * mdy);
-      if (mDist < mouseDist && mDist > 1) {
-        var force = (1 - mDist / mouseDist) * 0.02;
-        d.vx += (mdx / mDist) * force;
-        d.vy += (mdy / mDist) * force;
-      }
+    // === Layer 1: Broad window light wash ===
+    var lightX = w * 0.3 + Math.sin(time * 0.5) * w * 0.15;
+    var lightW = w * 0.5;
+    var grad1 = ctx.createLinearGradient(lightX - lightW / 2, 0, lightX + lightW / 2, 0);
+    grad1.addColorStop(0, "rgba(243, 237, 227, 0)");
+    grad1.addColorStop(0.3, "rgba(217, 180, 140, 0.04)");
+    grad1.addColorStop(0.5, "rgba(230, 210, 180, 0.07)");
+    grad1.addColorStop(0.7, "rgba(217, 180, 140, 0.04)");
+    grad1.addColorStop(1, "rgba(243, 237, 227, 0)");
+    ctx.fillStyle = grad1;
+    ctx.fillRect(0, 0, w, h);
 
-      // Dampen velocity
-      d.vx *= 0.995;
-      d.vy *= 0.995;
+    // === Layer 2: Venetian blind bands ===
+    var numBands = 12;
+    var bandAngle = 0.15 + mouseAngle + Math.sin(time * 0.7) * 0.05;
 
-      d.x += d.vx;
-      d.y += d.vy;
+    ctx.save();
+    ctx.translate(w / 2, h / 2);
+    ctx.rotate(bandAngle);
 
-      // Bounce off edges softly
-      if (d.x < 0) { d.x = 0; d.vx *= -0.5; }
-      if (d.x > w) { d.x = w; d.vx *= -0.5; }
-      if (d.y < 0) { d.y = 0; d.vy *= -0.5; }
-      if (d.y > h) { d.y = h; d.vy *= -0.5; }
+    for (var i = 0; i < numBands; i++) {
+      var y = (i - numBands / 2) * (h / (numBands - 2));
+      var bandH = h / (numBands * 1.8);
+      var breathe = Math.sin(time * 1.2 + i * 0.5) * 0.3 + 0.7;
+      var warmR = 230 + Math.sin(time + i) * 15;
+      var warmG = 200 + Math.sin(time * 0.8 + i) * 15;
+      var warmB = 160 + Math.sin(time * 0.6 + i) * 10;
+      var alpha = 0.025 * breathe + mouseWarmth * 0.015;
+
+      // Light band
+      var bandGrad = ctx.createLinearGradient(0, y - bandH, 0, y + bandH);
+      bandGrad.addColorStop(0, "rgba(" + Math.round(warmR) + "," + Math.round(warmG) + "," + Math.round(warmB) + ", 0)");
+      bandGrad.addColorStop(0.3, "rgba(" + Math.round(warmR) + "," + Math.round(warmG) + "," + Math.round(warmB) + "," + alpha + ")");
+      bandGrad.addColorStop(0.5, "rgba(" + Math.round(warmR) + "," + Math.round(warmG) + "," + Math.round(warmB) + "," + (alpha * 1.5) + ")");
+      bandGrad.addColorStop(0.7, "rgba(" + Math.round(warmR) + "," + Math.round(warmG) + "," + Math.round(warmB) + "," + alpha + ")");
+      bandGrad.addColorStop(1, "rgba(" + Math.round(warmR) + "," + Math.round(warmG) + "," + Math.round(warmB) + ", 0)");
+
+      ctx.fillStyle = bandGrad;
+      ctx.fillRect(-w, y - bandH, w * 2, bandH * 2);
     }
 
-    // Draw connections
-    for (var i = 0; i < dots.length; i++) {
-      for (var j = i + 1; j < dots.length; j++) {
-        var dx = dots[i].x - dots[j].x;
-        var dy = dots[i].y - dots[j].y;
-        var dist = Math.sqrt(dx * dx + dy * dy);
+    ctx.restore();
 
-        if (dist < connectDist) {
-          var alpha = (1 - dist / connectDist);
+    // === Layer 3: Shadow edges where blinds block light ===
+    ctx.save();
+    ctx.translate(w / 2, h / 2);
+    ctx.rotate(bandAngle);
 
-          // Lines near mouse glow ember
-          var avgX = (dots[i].x + dots[j].x) / 2;
-          var avgY = (dots[i].y + dots[j].y) / 2;
-          var toMouse = Math.sqrt(Math.pow(avgX - mouse.x, 2) + Math.pow(avgY - mouse.y, 2));
-          var mouseGlow = Math.max(0, 1 - toMouse / (mouseDist * 1.5));
+    for (var i = 0; i < numBands - 1; i++) {
+      var y = (i - numBands / 2 + 0.5) * (h / (numBands - 2));
+      var shadowH = 3 + Math.sin(time + i * 0.8) * 1;
+      var shadowAlpha = 0.02 + Math.sin(time * 0.9 + i) * 0.008;
 
-          var r = Math.round(21 + mouseGlow * 173);
-          var g = Math.round(20 + mouseGlow * 64);
-          var b = Math.round(15 + mouseGlow * 27);
-
-          ctx.beginPath();
-          ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + (alpha * 0.12) + ")";
-          ctx.lineWidth = alpha * 1.2;
-          ctx.moveTo(dots[i].x, dots[i].y);
-          ctx.lineTo(dots[j].x, dots[j].y);
-          ctx.stroke();
-        }
-      }
+      ctx.fillStyle = "rgba(21, 20, 15, " + shadowAlpha + ")";
+      ctx.fillRect(-w, y - shadowH / 2, w * 2, shadowH);
     }
 
-    // Draw dots
-    for (var i = 0; i < dots.length; i++) {
-      var d = dots[i];
-      var pulseR = d.r + Math.sin(d.pulse) * 0.8;
+    ctx.restore();
 
-      // Dots near mouse glow ember and grow
-      var toMouse = Math.sqrt(Math.pow(d.x - mouse.x, 2) + Math.pow(d.y - mouse.y, 2));
-      var mouseGlow = Math.max(0, 1 - toMouse / mouseDist);
+    // === Layer 4: Dust particles in the light ===
+    for (var i = 0; i < 30; i++) {
+      var px = (Math.sin(time * 0.3 + i * 7.3) * 0.5 + 0.5) * w;
+      var py = (Math.cos(time * 0.2 + i * 4.7) * 0.5 + 0.5) * h;
+      var pr = 1 + Math.sin(time * 2 + i) * 0.5;
+      var pAlpha = 0.04 + Math.sin(time + i * 2) * 0.025;
 
-      var dotR = pulseR + mouseGlow * 3;
-      var r = Math.round(21 + mouseGlow * 173);
-      var g = Math.round(20 + mouseGlow * 64);
-      var b = Math.round(15 + mouseGlow * 27);
-      var alpha = 0.1 + mouseGlow * 0.5 + d.layer * 0.08;
-
-      // Outer glow for mouse-near dots
-      if (mouseGlow > 0.1) {
+      // Only show dust in light areas (center-ish)
+      var distFromCenter = Math.abs(px - lightX) / (lightW / 2);
+      if (distFromCenter < 1) {
+        pAlpha *= (1 - distFromCenter);
         ctx.beginPath();
-        var glow = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, dotR * 4);
-        glow.addColorStop(0, "rgba(194, 84, 42, " + (mouseGlow * 0.08) + ")");
-        glow.addColorStop(1, "rgba(194, 84, 42, 0)");
-        ctx.fillStyle = glow;
-        ctx.arc(d.x, d.y, dotR * 4, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(217, 180, 140, " + pAlpha + ")";
+        ctx.arc(px, py, pr, 0, Math.PI * 2);
         ctx.fill();
       }
-
-      // Core dot
-      ctx.beginPath();
-      ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + alpha + ")";
-      ctx.arc(d.x, d.y, dotR, 0, Math.PI * 2);
-      ctx.fill();
     }
 
-    // Mouse cursor glow
-    if (mouse.x > 0) {
-      var cursorGlow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 120);
-      cursorGlow.addColorStop(0, "rgba(194, 84, 42, 0.04)");
-      cursorGlow.addColorStop(0.5, "rgba(194, 84, 42, 0.015)");
-      cursorGlow.addColorStop(1, "rgba(194, 84, 42, 0)");
-      ctx.beginPath();
-      ctx.fillStyle = cursorGlow;
-      ctx.arc(mouse.x, mouse.y, 120, 0, Math.PI * 2);
-      ctx.fill();
-    }
+    // === Layer 5: Mouse spotlight — like holding a light ===
+    var spotGrad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 250);
+    spotGrad.addColorStop(0, "rgba(240, 220, 190, 0.06)");
+    spotGrad.addColorStop(0.4, "rgba(230, 200, 160, 0.03)");
+    spotGrad.addColorStop(1, "rgba(243, 237, 227, 0)");
+    ctx.fillStyle = spotGrad;
+    ctx.beginPath();
+    ctx.arc(mouse.x, mouse.y, 250, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Warm edge where mouse light hits "wall"
+    var edgeGlow = ctx.createRadialGradient(mouse.x, mouse.y, 180, mouse.x, mouse.y, 280);
+    edgeGlow.addColorStop(0, "rgba(194, 84, 42, 0)");
+    edgeGlow.addColorStop(0.5, "rgba(194, 84, 42, 0.015)");
+    edgeGlow.addColorStop(1, "rgba(194, 84, 42, 0)");
+    ctx.fillStyle = edgeGlow;
+    ctx.beginPath();
+    ctx.arc(mouse.x, mouse.y, 280, 0, Math.PI * 2);
+    ctx.fill();
 
     requestAnimationFrame(draw);
   }
