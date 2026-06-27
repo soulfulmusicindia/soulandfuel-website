@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Soul &amp; Fuel</title>
+<meta name="description" content="Get in touch with Soul & Fuel for interior & architecture photography, travel films and corporate films.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,500&family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-nav is-solid">
+  <div class="wrap">
+    <a href="index.html" class="logo-mark" aria-label="Soul & Fuel Media home">
+      <img src="images/logo/horizontal-black.png" alt="Soul & Fuel Media">
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="work-interior-architecture.html">Interior &amp; Architecture</a></li>
+        <li><a href="work-travel-films.html">Travel Films</a></li>
+        <li><a href="work-corporate-films.html">Corporate Films</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="is-active">Contact</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero wrap">
+  <h1>Start a project.</h1>
+</section>
+
+<section class="contact-grid wrap">
+  <div class="info reveal">
+    <p>Tell me a little about the space, the trip, or the brand — and roughly when you need it shot. I'll reply within a couple of days.</p>
+    <a class="link-line" href="mailto:hello@soulandfuel.com">hello@soulandfuel.com</a>
+    <a class="link-line" href="tel:+910000000000">+91 00000 00000</a>
+    <p style="margin-top:30px;color:var(--slate);font-size:14px;">Based in Bengaluru. Travels for the right project.</p>
+  </div>
+
+  <!--
+    This form posts to Formspree's free tier (no backend, no cost, no code).
+    To activate it: create a free account at formspree.io, create a form,
+    and replace YOUR_FORM_ID below with the ID it gives you.
+  -->
+  <form class="contact-form reveal" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+    <div>
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+      <label for="project">Project type</label>
+      <select id="project" name="project">
+        <option>Interior &amp; architecture photography</option>
+        <option>Travel film</option>
+        <option>Corporate film</option>
+        <option>Something else</option>
+      </select>
+    </div>
+    <div>
+      <label for="message">Tell me about it</label>
+      <textarea id="message" name="message" required></textarea>
+    </div>
+    <button type="submit" class="btn">Send &rarr;</button>
+  </form>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <a href="index.html" class="logo-mark"><img src="images/logo/horizontal-black.png" alt="Soul & Fuel Media"></a>
+      <ul class="footer-links">
+        <li><a href="work-interior-architecture.html">Interior &amp; Architecture</a></li>
+        <li><a href="work-travel-films.html">Travel Films</a></li>
+        <li><a href="work-corporate-films.html">Corporate Films</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span data-year></span> Soul &amp; Fuel Media</span>
+      <span>Instagram &middot; YouTube &middot; LinkedIn</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
