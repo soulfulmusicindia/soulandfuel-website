@@ -167,6 +167,14 @@ body {
   .nav-links a { white-space: nowrap; padding: 6px 0; font-size: 11px; }
   .nav-toggle { display: none; }
 }
+@media (max-width: 540px) {
+  .wrap { padding: 0 18px; }
+  .project-grid { gap: 4px; padding-left: 0; padding-right: 0; }
+  .video-grid { gap: 12px; }
+  .editorial-grid { gap: 16px; }
+  .project-list-grid { gap: 14px; }
+  .hero-content { padding: 0 18px 48px; }
+}
 
 /* ============================================================
    HERO (crossfade — only on homepage)
