@@ -1012,6 +1012,7 @@ form.contact-form { display: flex; flex-direction: column; gap: 16px; }
    INSTAGRAM SECTION
    ============================================================ */
 .insta-section { padding: 0 0 110px; }
+.sk-instagram-feed .sk-badge { display: none !important; }
 .insta-embed-placeholder {
   border: 1.5px dashed rgba(21,20,15,0.2);
   border-radius: 4px;
