@@ -106,9 +106,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Lightbox for project grids
-  const projectGrid = document.querySelector(".project-grid");
-  if (projectGrid) {
-    const cells = Array.from(projectGrid.querySelectorAll(".ph"));
+  const projectDetailGrid = document.querySelector(".project-grid");
+  if (projectDetailGrid) {
+    const cells = Array.from(projectDetailGrid.querySelectorAll(".ph"));
     if (cells.length) {
       let current = 0;
       const box = document.createElement("div");
