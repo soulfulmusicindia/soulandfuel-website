@@ -191,6 +191,10 @@ body {
   .nav-links a::after { display: none; }
   .nav-links a.is-active { color: var(--ember); }
   .nav-toggle { display: none; }
+  .site-nav:not(.is-scrolled):not(.is-solid) .nav-links a { color: var(--bone); }
+  .site-nav:not(.is-scrolled):not(.is-solid) .nav-links a.is-active { color: var(--ember-soft); }
+  .site-nav:not(.is-scrolled):not(.is-solid) .nav-links li + li::before { color: var(--bone); }
+  .site-nav:not(.is-scrolled):not(.is-solid) .logo-mark img { filter: invert(1); }
 }
 @media (max-width: 860px) {
   .wrap,
