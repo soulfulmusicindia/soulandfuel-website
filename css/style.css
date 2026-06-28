@@ -738,6 +738,52 @@ form.contact-form { display: flex; flex-direction: column; gap: 16px; }
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
+/* ---------- page load fade-in ---------- */
+body { animation: pageIn 0.6s var(--ease) both; }
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- project grid staggered fade ---------- */
+.project-grid .ph,
+.project-list-grid .work-tile,
+.video-grid-item,
+.editorial-card {
+  opacity: 0;
+  transform: translateY(20px) scale(0.97);
+  animation: tileIn 0.5s var(--ease) both;
+}
+@keyframes tileIn {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.project-grid .ph:nth-child(1) { animation-delay: 0.05s; }
+.project-grid .ph:nth-child(2) { animation-delay: 0.1s; }
+.project-grid .ph:nth-child(3) { animation-delay: 0.15s; }
+.project-grid .ph:nth-child(4) { animation-delay: 0.2s; }
+.project-grid .ph:nth-child(5) { animation-delay: 0.25s; }
+.project-grid .ph:nth-child(6) { animation-delay: 0.3s; }
+.project-grid .ph:nth-child(7) { animation-delay: 0.35s; }
+.project-grid .ph:nth-child(8) { animation-delay: 0.4s; }
+.project-grid .ph:nth-child(9) { animation-delay: 0.45s; }
+.project-grid .ph:nth-child(n+10) { animation-delay: 0.5s; }
+
+.project-list-grid .work-tile:nth-child(1) { animation-delay: 0.05s; }
+.project-list-grid .work-tile:nth-child(2) { animation-delay: 0.12s; }
+.project-list-grid .work-tile:nth-child(3) { animation-delay: 0.19s; }
+.project-list-grid .work-tile:nth-child(4) { animation-delay: 0.26s; }
+.project-list-grid .work-tile:nth-child(5) { animation-delay: 0.33s; }
+.project-list-grid .work-tile:nth-child(6) { animation-delay: 0.4s; }
+.project-list-grid .work-tile:nth-child(n+7) { animation-delay: 0.47s; }
+
+.editorial-card:nth-child(1) { animation-delay: 0.05s; }
+.editorial-card:nth-child(2) { animation-delay: 0.12s; }
+.editorial-card:nth-child(3) { animation-delay: 0.19s; }
+.editorial-card:nth-child(4) { animation-delay: 0.26s; }
+.editorial-card:nth-child(5) { animation-delay: 0.33s; }
+.editorial-card:nth-child(6) { animation-delay: 0.4s; }
+
+/* ---------- lazy image fade ---------- */
+.project-grid .ph img,
+.project-list-grid .work-tile img { transition: opacity 0.5s var(--ease), transform 0.6s var(--ease), filter 0.4s var(--ease); }
+
 /* ============================================================
    PROJECT LISTING (Interior & Architecture overview)
    ============================================================ */
