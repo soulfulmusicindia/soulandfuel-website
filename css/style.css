@@ -781,6 +781,12 @@ form.contact-form { display: flex; flex-direction: column; gap: 16px; }
 .cat-hero:has(.back-link) h1 { margin-right: 16px; }
 .cat-hero:has(.back-link) .eyebrow { margin-bottom: 0; }
 
+@media (max-width: 860px) {
+  .cat-hero:has(.back-link) {
+    padding-top: calc(var(--nav-h) + 80px);
+  }
+}
+
 .project-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
