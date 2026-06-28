@@ -53,23 +53,56 @@ document.addEventListener("DOMContentLoaded", () => {
     el.textContent = new Date().getFullYear();
   });
 
-  // Project type filter
+  // Project grid — show 6 at a time with Load More
+  const projectGrid = document.querySelector(".project-list-grid");
+  const loadMoreBtn = document.querySelector(".btn-more-projects");
   const filterBtns = document.querySelectorAll(".filter-btn");
-  if (filterBtns.length) {
-    filterBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        filterBtns.forEach((b) => b.classList.remove("is-active"));
-        btn.classList.add("is-active");
-        const filter = btn.dataset.filter;
-        document.querySelectorAll(".project-list-grid .work-tile").forEach((tile) => {
-          if (filter === "all" || tile.dataset.type === filter) {
-            tile.classList.remove("is-hidden");
-          } else {
-            tile.classList.add("is-hidden");
-          }
+  if (projectGrid && loadMoreBtn) {
+    var perPage = 6;
+    var allTiles = Array.from(projectGrid.querySelectorAll(".work-tile"));
+    var shown = 0;
+
+    function showBatch() {
+      var visibleTiles = allTiles.filter(function (t) { return !t.classList.contains("is-hidden"); });
+      var count = 0;
+      for (var i = 0; i < visibleTiles.length; i++) {
+        if (!visibleTiles[i].classList.contains("is-overflow")) count++;
+        if (count <= shown) continue;
+        if (count > shown + perPage) break;
+        visibleTiles[i].classList.remove("is-overflow");
+      }
+      shown += perPage;
+      var remaining = visibleTiles.filter(function (t) { return t.classList.contains("is-overflow"); });
+      if (remaining.length === 0) loadMoreBtn.style.display = "none";
+      else loadMoreBtn.style.display = "";
+    }
+
+    function resetGrid() {
+      shown = 0;
+      allTiles.forEach(function (t) { t.classList.add("is-overflow"); });
+      showBatch();
+    }
+
+    resetGrid();
+    loadMoreBtn.addEventListener("click", showBatch);
+
+    if (filterBtns.length) {
+      filterBtns.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          filterBtns.forEach(function (b) { b.classList.remove("is-active"); });
+          btn.classList.add("is-active");
+          var filter = btn.dataset.filter;
+          allTiles.forEach(function (tile) {
+            if (filter === "all" || tile.dataset.type === filter) {
+              tile.classList.remove("is-hidden");
+            } else {
+              tile.classList.add("is-hidden");
+            }
+          });
+          resetGrid();
         });
       });
-    });
+    }
   }
 
   // Lightbox for project grids
