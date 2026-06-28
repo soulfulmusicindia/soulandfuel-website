@@ -754,26 +754,31 @@ form.contact-form { display: flex; flex-direction: column; gap: 16px; }
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
-/* ---------- parallax depth ---------- */
+/* ---------- scroll-driven animations ---------- */
 .parallax-page .cat-hero {
   position: relative;
   z-index: 2;
+  overflow: visible;
 }
+.parallax-page .cat-hero h1,
+.parallax-page .cat-hero .eyebrow,
+.parallax-page .cat-hero .dek,
 .parallax-page .filter-bar {
-  position: relative;
-  z-index: 2;
+  will-change: transform, opacity;
 }
 .parallax-page .project-list-grid .work-tile {
-  transition: transform 0.6s var(--ease), opacity 0.5s var(--ease);
-  will-change: transform;
+  will-change: transform, opacity;
+  transform-origin: center bottom;
 }
 .parallax-page .section-head h2 {
-  transition: transform 0.5s var(--ease);
-  will-change: transform;
+  will-change: transform, opacity;
 }
 .parallax-page .editorial-card {
-  transition: transform 0.6s var(--ease), opacity 0.5s var(--ease);
-  will-change: transform;
+  will-change: transform, opacity;
+  transform-origin: center bottom;
+}
+.parallax-page .video-grid-item {
+  will-change: transform, opacity;
 }
 .parallax-page .contact-band {
   position: relative;
