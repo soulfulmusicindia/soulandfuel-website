@@ -141,6 +141,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.key === "ArrowLeft") show(current - 1);
         if (e.key === "ArrowRight") show(current + 1);
       });
+      // Touch swipe support
+      let touchStartX = 0;
+      let touchStartY = 0;
+      box.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+      box.addEventListener("touchend", (e) => {
+        const dx = e.changedTouches[0].screenX - touchStartX;
+        const dy = e.changedTouches[0].screenY - touchStartY;
+        if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx)) return;
+        if (dx < 0) show(current + 1);
+        else show(current - 1);
+      }, { passive: true });
     }
   }
 
