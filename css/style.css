@@ -783,7 +783,13 @@ form.contact-form { display: flex; flex-direction: column; gap: 16px; }
 
 @media (max-width: 860px) {
   .cat-hero:has(.back-link) {
-    padding-top: calc(var(--nav-h) + 80px);
+    padding-top: 160px;
+  }
+  .cat-hero {
+    padding-top: 160px;
+  }
+  .page-hero {
+    padding-top: 160px;
   }
 }
 
