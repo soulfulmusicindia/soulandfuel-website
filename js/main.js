@@ -103,6 +103,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // 3D scroll reveal for project photos
+  const photoGrid = document.querySelector(".project-grid");
+  if (photoGrid) {
+    const photos = photoGrid.querySelectorAll(".ph");
+    if ("IntersectionObserver" in window && photos.length) {
+      const photoObs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("in-view");
+            } else {
+              entry.target.classList.remove("in-view");
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      photos.forEach((p) => photoObs.observe(p));
+    } else {
+      photos.forEach((p) => p.classList.add("in-view"));
+    }
+  }
+
   // Lightbox for project grids
   const projectDetailGrid = document.querySelector(".project-grid");
   if (projectDetailGrid) {
