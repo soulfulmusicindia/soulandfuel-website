@@ -805,8 +805,8 @@ body { animation: pageIn 0.6s var(--ease) both; }
   .project-list-grid { grid-template-columns: 1fr; }
   .project-list-grid .work-tile { min-height: 300px; }
 }
-.project-list-grid .work-tile.is-hidden { display: none; }
-.project-list-grid .work-tile.is-overflow { display: none; }
+.project-list-grid .work-tile.is-hidden { display: none !important; }
+.project-list-grid .work-tile.is-overflow { display: none !important; }
 
 .load-more-projects {
   text-align: center;
