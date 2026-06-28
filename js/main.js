@@ -53,6 +53,25 @@ document.addEventListener("DOMContentLoaded", () => {
     el.textContent = new Date().getFullYear();
   });
 
+  // Project type filter
+  const filterBtns = document.querySelectorAll(".filter-btn");
+  if (filterBtns.length) {
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterBtns.forEach((b) => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+        const filter = btn.dataset.filter;
+        document.querySelectorAll(".project-list-grid .work-tile").forEach((tile) => {
+          if (filter === "all" || tile.dataset.type === filter) {
+            tile.classList.remove("is-hidden");
+          } else {
+            tile.classList.add("is-hidden");
+          }
+        });
+      });
+    });
+  }
+
   // Lightbox for project grids
   const projectGrid = document.querySelector(".project-grid");
   if (projectGrid) {
