@@ -806,6 +806,30 @@ body { animation: pageIn 0.6s var(--ease) both; }
   .project-list-grid .work-tile { min-height: 300px; }
 }
 .project-list-grid .work-tile.is-hidden { display: none; }
+.project-list-grid .work-tile.is-overflow { display: none; }
+
+.load-more-projects {
+  text-align: center;
+  padding: 20px 0 50px;
+}
+.btn-more-projects {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-fuel);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--bone);
+  padding: 14px 28px;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), background 0.25s var(--ease);
+}
+.btn-more-projects:hover { transform: translateY(-2px); background: var(--ink-soft); }
 
 .filter-bar {
   display: flex;
