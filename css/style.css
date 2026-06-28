@@ -749,12 +749,16 @@ form.contact-form { display: flex; flex-direction: column; gap: 16px; }
   gap: 6px;
   font-family: var(--font-fuel);
   font-size: 13px;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--slate);
+  color: var(--ember);
   margin-bottom: 18px;
+  border-bottom: 2px solid var(--ember);
+  padding-bottom: 3px;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
 }
-.back-link:hover { color: var(--ink); }
+.back-link:hover { color: var(--ink); border-color: var(--ink); }
 
 .project-grid {
   display: grid;
