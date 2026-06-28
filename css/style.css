@@ -753,12 +753,24 @@ form.contact-form { display: flex; flex-direction: column; gap: 16px; }
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ember);
-  margin-bottom: 18px;
   border-bottom: 2px solid var(--ember);
   padding-bottom: 3px;
   transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
 }
 .back-link:hover { color: var(--ink); border-color: var(--ink); }
+
+.project-grid ~ .contact-band { margin-top: 0; }
+.cat-hero:has(.back-link) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 24px;
+  padding-top: calc(var(--nav-h) + 30px);
+  padding-bottom: 24px;
+}
+.cat-hero:has(.back-link) .back-link { margin-right: auto; width: 100%; margin-bottom: 0; }
+.cat-hero:has(.back-link) h1 { margin-right: 16px; }
+.cat-hero:has(.back-link) .eyebrow { margin-bottom: 0; }
 
 .project-grid {
   display: grid;
