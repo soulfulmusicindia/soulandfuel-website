@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loadMoreBtn = document.querySelector(".btn-more-projects");
   const filterBtns = document.querySelectorAll(".filter-btn");
   if (projectGrid && loadMoreBtn) {
-    var perPage = 6;
+    var perPage = 8;
     var allTiles = Array.from(projectGrid.querySelectorAll(".work-tile"));
     var shown = 0;
 
