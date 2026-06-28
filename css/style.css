@@ -577,10 +577,10 @@ body {
    SUBPAGES — category hero + gallery
    ============================================================ */
 .cat-hero {
-  padding: calc(var(--nav-h) + 84px) 0 64px;
+  padding: calc(var(--nav-h) + 40px) 0 28px;
   border-bottom: 1px solid rgba(21,20,15,0.1);
 }
-.cat-hero .eyebrow { margin-bottom: 16px; }
+.cat-hero .eyebrow { margin-bottom: 8px; }
 .cat-hero h1 {
   font-family: var(--font-soul);
   font-style: italic;
@@ -589,10 +589,10 @@ body {
   max-width: 780px;
 }
 .cat-hero p.dek {
-  margin-top: 20px;
+  margin-top: 12px;
   max-width: 560px;
   color: var(--slate);
-  font-size: 17px;
+  font-size: 15px;
 }
 
 .gallery {
@@ -791,7 +791,7 @@ body { animation: pageIn 0.6s var(--ease) both; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 22px;
-  padding: 10px 0 70px;
+  padding: 10px 0 50px;
 }
 .project-list-grid .work-tile { min-height: 420px; }
 .project-list-grid .work-tile.is-hidden { display: none; }
@@ -799,7 +799,7 @@ body { animation: pageIn 0.6s var(--ease) both; }
 .filter-bar {
   display: flex;
   gap: 8px;
-  margin-top: 28px;
+  margin-top: 16px;
 }
 .filter-btn {
   font-family: var(--font-fuel);
