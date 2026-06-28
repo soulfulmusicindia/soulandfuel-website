@@ -755,10 +755,60 @@ form.contact-form { display: flex; flex-direction: column; gap: 16px; }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 
 /* ---------- scroll-driven animations ---------- */
+.parallax-page {
+  background: var(--ink);
+  color: var(--bone);
+}
 .parallax-page .cat-hero {
   position: relative;
   z-index: 2;
   overflow: visible;
+  border-bottom-color: rgba(250,248,244,0.1);
+}
+.parallax-page .cat-hero .dek { color: var(--parchment-dim); }
+.parallax-page .cat-hero .eyebrow { color: var(--ember-soft); }
+.parallax-page .back-link { color: var(--ember-soft); border-color: var(--ember-soft); }
+.parallax-page .back-link:hover { color: var(--bone); border-color: var(--bone); }
+.parallax-page .site-nav.is-solid {
+  background: rgba(21, 20, 15, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 rgba(250,248,244,0.08);
+}
+.parallax-page .site-nav.is-solid .logo-mark img { filter: invert(1); }
+.parallax-page .site-nav.is-solid .nav-links a { color: var(--bone); }
+.parallax-page .site-nav.is-solid .nav-links a::after { background: var(--ember-soft); }
+.parallax-page .filter-btn {
+  border-color: rgba(250,248,244,0.2);
+  color: var(--parchment-dim);
+}
+.parallax-page .filter-btn:hover { border-color: var(--bone); color: var(--bone); }
+.parallax-page .filter-btn.is-active {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--bone);
+}
+.parallax-page .work-tile-label .kicker { color: var(--parchment-dim); }
+.parallax-page .section-head h2 { color: var(--bone); }
+.parallax-page .view-all { color: var(--bone); border-color: var(--bone); }
+.parallax-page .yt-note { color: var(--parchment-dim); }
+.parallax-page .ed-magazine { color: var(--ember-soft); }
+.parallax-page .ed-title { color: var(--bone); }
+.parallax-page .ed-read { color: var(--parchment-dim); }
+.parallax-page .editorial-card { background: var(--ink-soft); border-color: rgba(250,248,244,0.08); }
+.parallax-page .editorial-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+.parallax-page .ed-thumb-branded { background: var(--ink-soft) !important; }
+.parallax-page .btn-more-projects { background: var(--bone); color: var(--ink); }
+.parallax-page .btn-more-projects:hover { background: var(--parchment-dim); }
+.parallax-page .btn-load-more { background: var(--bone); color: var(--ink); }
+.parallax-page .btn-load-more:hover { background: var(--parchment-dim); }
+.parallax-page .vid-title { color: var(--bone); }
+.parallax-page .site-footer { background: var(--ink-soft); }
+.parallax-page .insta-section::after {
+  background: linear-gradient(to bottom, transparent, var(--ink) 40%);
+}
+@media (max-width: 860px) {
+  .parallax-page .site-nav.is-solid .nav-links a { color: var(--bone); }
+  .parallax-page .site-nav.is-solid .nav-links li + li::before { color: var(--ember-soft); }
 }
 .parallax-page .cat-hero h1,
 .parallax-page .cat-hero .eyebrow,
