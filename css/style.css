@@ -108,6 +108,18 @@ body {
   filter: invert(1);
   transition: filter 0.3s var(--ease);
 }
+.site-nav:not(.is-scrolled):not(.is-solid) {
+  color: var(--bone);
+}
+.site-nav:not(.is-scrolled):not(.is-solid) .nav-links a {
+  color: var(--bone);
+}
+.site-nav:not(.is-scrolled):not(.is-solid) .nav-links a::after {
+  background: var(--bone);
+}
+.site-nav:not(.is-scrolled):not(.is-solid) .nav-toggle span {
+  background: var(--bone);
+}
 .site-nav.is-scrolled .logo-mark img,
 .site-nav.is-solid .logo-mark img {
   filter: none;
