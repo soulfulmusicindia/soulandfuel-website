@@ -794,6 +794,33 @@ body { animation: pageIn 0.6s var(--ease) both; }
   padding: 10px 0 70px;
 }
 .project-list-grid .work-tile { min-height: 420px; }
+.project-list-grid .work-tile.is-hidden { display: none; }
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-top: 28px;
+}
+.filter-btn {
+  font-family: var(--font-fuel);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border: 1.5px solid rgba(21, 20, 15, 0.2);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--slate);
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+}
+.filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+.filter-btn.is-active {
+  background: var(--ink);
+  color: var(--bone);
+  border-color: var(--ink);
+}
 
 /* ============================================================
    PROJECT DETAIL — masonry-style grid, matches reference grid
