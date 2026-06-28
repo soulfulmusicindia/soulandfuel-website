@@ -181,11 +181,20 @@ body {
   .nav-toggle { display: none; }
 }
 @media (max-width: 860px) {
-  .wrap { padding: 0 24px; }
-  .hero-content { padding: 0 24px 48px; }
-  .page-hero { padding-left: 24px; padding-right: 24px; }
-  .split-copy { padding-left: 24px; padding-right: 24px; }
+  .wrap,
+  .cat-hero,
+  .page-hero,
+  .project-grid,
+  .project-list-grid,
+  .yt-embed-section,
+  .editorial-section,
+  .insta-section,
+  .split-copy,
   .contact-grid { padding-left: 24px; padding-right: 24px; }
+  .hero-content { padding: 0 24px 48px; }
+  .site-nav .wrap { padding-left: 24px; padding-right: 24px; }
+  .footer-grid,
+  .footer-bottom { padding-left: 0; padding-right: 0; }
 }
 @media (max-width: 540px) {
   .project-grid { gap: 4px; }
