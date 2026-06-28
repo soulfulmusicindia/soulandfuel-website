@@ -64,21 +64,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showBatch() {
       var visibleTiles = allTiles.filter(function (t) { return !t.classList.contains("is-hidden"); });
-      var count = 0;
+      var revealed = 0;
       for (var i = 0; i < visibleTiles.length; i++) {
-        if (!visibleTiles[i].classList.contains("is-overflow")) count++;
-        if (count <= shown) continue;
-        if (count > shown + perPage) break;
+        if (!visibleTiles[i].classList.contains("is-overflow")) continue;
         visibleTiles[i].classList.remove("is-overflow");
+        revealed++;
+        if (revealed >= perPage) break;
       }
-      shown += perPage;
       var remaining = visibleTiles.filter(function (t) { return t.classList.contains("is-overflow"); });
       if (remaining.length === 0) loadMoreBtn.style.display = "none";
       else loadMoreBtn.style.display = "";
     }
 
     function resetGrid() {
-      shown = 0;
       allTiles.forEach(function (t) { t.classList.add("is-overflow"); });
       showBatch();
     }
