@@ -1,4 +1,4 @@
-// Logo reveal — white overlay with logo cutout, zooms on scroll
+// Logo reveal — white overlay with logo cutout, 3D zoom on scroll
 (function () {
   var reveal = document.getElementById("logoReveal");
   if (!reveal) return;
@@ -6,15 +6,15 @@
   var mask = reveal.querySelector(".logo-reveal-mask");
   var hint = reveal.querySelector(".logo-reveal-hint");
   var startSize = window.innerWidth < 768 ? 65 : 30;
-  var endSize = 350;
-  var scrollRange = window.innerHeight * 1.5;
+  var endSize = 400;
+  var scrollRange = window.innerHeight * 2;
   var done = false;
 
-  // Prevent scroll initially for a brief moment
+  // Lock scroll briefly on load
   document.body.style.overflow = "hidden";
   setTimeout(function () {
     document.body.style.overflow = "";
-  }, 800);
+  }, 600);
 
   function update() {
     if (done) return;
@@ -22,30 +22,43 @@
     var scrollY = window.scrollY || window.pageYOffset;
     var progress = Math.min(scrollY / scrollRange, 1);
 
-    // Ease out
+    // Ease out cubic for smooth deceleration
     var eased = 1 - Math.pow(1 - progress, 3);
 
+    // Mask size grows
     var size = startSize + (endSize - startSize) * eased;
     mask.style.webkitMaskSize = size + "vw auto, 100% 100%";
     mask.style.maskSize = size + "vw auto, 100% 100%";
 
-    // Fade out the white overlay as logo grows
-    if (progress > 0.6) {
-      var fadeProgress = (progress - 0.6) / 0.4;
+    // 3D depth — mask pushes toward viewer
+    var translateZ = eased * 150;
+    var rotateX = (1 - eased) * 2;
+    var scale = 1 + eased * 0.1;
+    mask.style.transform = "translateZ(" + translateZ + "px) rotateX(" + rotateX + "deg) scale(" + scale + ")";
+
+    // Fade out white overlay in last 30%
+    if (progress > 0.7) {
+      var fadeProgress = (progress - 0.7) / 0.3;
       mask.style.opacity = 1 - fadeProgress;
+    } else {
+      mask.style.opacity = 1;
     }
 
-    // Hide hint on scroll
-    if (hint && progress > 0.05) {
+    // Hide hint immediately on scroll
+    if (hint && progress > 0.02) {
       hint.style.opacity = "0";
+      hint.style.transform = "translateX(-50%) translateY(20px)";
     }
 
     if (progress >= 1) {
       done = true;
       reveal.classList.add("is-done");
+
+      // Scroll back to top smoothly so page starts from the beginning
       setTimeout(function () {
         reveal.remove();
-      }, 600);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 500);
     }
   }
 
@@ -56,7 +69,8 @@
     reveal.classList.add("is-done");
     setTimeout(function () {
       reveal.remove();
-    }, 600);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 500);
   });
 
   // Touch support for mobile
