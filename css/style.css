@@ -52,6 +52,7 @@ body {
   z-index: 9998;
   pointer-events: all;
   transition: opacity 0.5s var(--ease);
+  perspective: 1200px;
 }
 .logo-reveal.is-done {
   opacity: 0;
@@ -71,7 +72,9 @@ body {
   mask-position: center, center;
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
-  will-change: -webkit-mask-size, mask-size;
+  will-change: -webkit-mask-size, mask-size, transform;
+  transition: transform 0.1s linear;
+  transform-origin: center center;
 }
 .logo-reveal-content {
   display: none;
@@ -87,11 +90,29 @@ body {
   text-transform: uppercase;
   color: var(--slate);
   z-index: 2;
-  animation: fadeSlideHint 1.5s var(--ease) 1s both;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+  animation: fadeSlideHint 1s var(--ease) 0.8s both;
+}
+.logo-reveal-hint::after {
+  content: "";
+  width: 1px;
+  height: 24px;
+  background: var(--slate);
+  animation: scrollLine 1.5s var(--ease) infinite;
 }
 @keyframes fadeSlideHint {
   0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
   100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  40% { transform: scaleY(1); transform-origin: top; }
+  60% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
 }
 @media (max-width: 768px) {
   .logo-reveal-mask {
