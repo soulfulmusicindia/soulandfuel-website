@@ -51,14 +51,18 @@ body {
   inset: 0;
   z-index: 9998;
   pointer-events: all;
-  transition: opacity 0.5s var(--ease);
-  perspective: 1200px;
 }
-.logo-reveal.is-done {
-  opacity: 0;
-  pointer-events: none;
+.logo-reveal-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('../images/hero-architecture.jpg');
+  background-size: cover;
+  background-position: center;
+  transform: scale(2);
+  transform-origin: center center;
+  will-change: transform;
 }
-.logo-reveal-mask {
+.logo-reveal-white {
   position: absolute;
   inset: 0;
   background: #fff;
@@ -72,20 +76,7 @@ body {
   mask-position: center, center;
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
-  will-change: -webkit-mask-size, mask-size, transform;
-  transition: transform 0.1s linear;
-  transform-origin: center center;
-}
-.logo-reveal-content {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image: url('../images/hero-architecture.jpg');
-  background-size: cover;
-  background-position: center;
-  transform: scale(2.5);
-  transform-origin: center center;
-  will-change: transform;
+  will-change: -webkit-mask-size, mask-size;
 }
 .logo-reveal-hint {
   position: absolute;
@@ -102,8 +93,9 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
-  animation: fadeSlideHint 1s var(--ease) 0.8s both;
+  opacity: 0;
+  animation: revealHintIn 0.8s var(--ease) 1s forwards;
+  transition: opacity 0.3s var(--ease);
 }
 .logo-reveal-hint::after {
   content: "";
@@ -112,10 +104,7 @@ body {
   background: var(--slate);
   animation: scrollLine 1.5s var(--ease) infinite;
 }
-@keyframes fadeSlideHint {
-  0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
-  100% { opacity: 1; transform: translateX(-50%) translateY(0); }
-}
+@keyframes revealHintIn { to { opacity: 1; } }
 @keyframes scrollLine {
   0% { transform: scaleY(0); transform-origin: top; }
   40% { transform: scaleY(1); transform-origin: top; }
@@ -123,9 +112,9 @@ body {
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 @media (max-width: 768px) {
-  .logo-reveal-mask {
-    -webkit-mask-size: 65vw auto;
-    mask-size: 65vw auto;
+  .logo-reveal-white {
+    -webkit-mask-size: 60vw auto, 100% 100%;
+    mask-size: 60vw auto, 100% 100%;
   }
 }
 
