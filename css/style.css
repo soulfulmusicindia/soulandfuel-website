@@ -121,8 +121,11 @@ body {
   100% { opacity: 1; transform: translateY(0); }
 }
 .site-nav .logo-mark {
-  opacity: 0;
   animation: fadeSlideDown 0.8s var(--ease) 0.1s both;
+}
+.site-nav .logo-mark:hover {
+  animation: none;
+  opacity: 1;
 }
 .site-nav .nav-links li {
   opacity: 0;
