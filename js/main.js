@@ -29,6 +29,24 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  // Magnetic logo hover effect
+  const logoMark = document.querySelector(".logo-mark");
+  if (logoMark && window.innerWidth > 768) {
+    logoMark.addEventListener("mousemove", (e) => {
+      const rect = logoMark.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const tiltX = (y / rect.height) * -15;
+      const tiltY = (x / rect.width) * 15;
+      const moveX = x * 0.3;
+      const moveY = y * 0.3;
+      logoMark.style.transform = "perspective(500px) rotateX(" + tiltX + "deg) rotateY(" + tiltY + "deg) translateX(" + moveX + "px) translateY(" + moveY + "px) scale(1.05)";
+    });
+    logoMark.addEventListener("mouseleave", () => {
+      logoMark.style.transform = "perspective(500px) rotateX(0) rotateY(0) translateX(0) translateY(0) scale(1)";
+    });
+  }
+
   // Reveal-on-scroll for sections marked .reveal
   const targets = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window && targets.length) {
