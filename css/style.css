@@ -77,7 +77,15 @@ body {
   transform-origin: center center;
 }
 .logo-reveal-content {
-  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url('../images/hero-architecture.jpg');
+  background-size: cover;
+  background-position: center;
+  transform: scale(2.5);
+  transform-origin: center center;
+  will-change: transform;
 }
 .logo-reveal-hint {
   position: absolute;
