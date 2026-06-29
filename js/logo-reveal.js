@@ -1,63 +1,52 @@
-// Logo reveal — captures scroll/wheel to drive animation without moving page
+// Logo reveal — wheel/touch drives logo expand + hero zoom out
 (function () {
   var reveal = document.getElementById("logoReveal");
   if (!reveal) return;
 
-  var mask = reveal.querySelector(".logo-reveal-mask");
+  var bg = reveal.querySelector(".logo-reveal-bg");
+  var white = reveal.querySelector(".logo-reveal-white");
   var hint = reveal.querySelector(".logo-reveal-hint");
-  var content = reveal.querySelector(".logo-reveal-content");
-
-  var startLogoSize = window.innerWidth < 768 ? 65 : 30;
-  var endLogoSize = 500;
-  var totalDelta = 0;
-  var targetDelta = window.innerHeight * 2.5;
-  var done = false;
+  var isMobile = window.innerWidth < 768;
+  var startMask = isMobile ? 60 : 30;
+  var endMask = 500;
+  var totalNeeded = 1500;
+  var accumulated = 0;
   var progress = 0;
-  var smoothProgress = 0;
+  var smooth = 0;
+  var done = false;
+  var raf;
 
-  // Lock page scroll during reveal
   document.body.style.overflow = "hidden";
   window.scrollTo(0, 0);
 
-  function render() {
+  function tick() {
     if (done) return;
 
-    // Smooth interpolation
-    smoothProgress += (progress - smoothProgress) * 0.08;
-    var eased = 1 - Math.pow(1 - smoothProgress, 3);
+    smooth += (progress - smooth) * 0.06;
+    var e = 1 - Math.pow(1 - smooth, 3);
 
-    // Logo mask grows
-    var logoSize = startLogoSize + (endLogoSize - startLogoSize) * eased;
-    mask.style.webkitMaskSize = logoSize + "vw auto, 100% 100%";
-    mask.style.maskSize = logoSize + "vw auto, 100% 100%";
+    var maskSize = startMask + (endMask - startMask) * e;
+    white.style.webkitMaskSize = maskSize + "vw auto, 100% 100%";
+    white.style.maskSize = maskSize + "vw auto, 100% 100%";
 
-    // 3D depth
-    var tz = eased * 80;
-    mask.style.transform = "translateZ(" + tz + "px) scale(" + (1 + eased * 0.03) + ")";
+    var bgScale = 2 - e * 1;
+    bg.style.transform = "scale(" + bgScale + ")";
 
-    // Background image zooms out
-    if (content) {
-      var bgScale = 2.5 - eased * 1.5;
-      content.style.transform = "scale(" + bgScale + ")";
-    }
-
-    // Fade out overlay in last 20%
-    if (smoothProgress > 0.8) {
-      var fade = (smoothProgress - 0.8) / 0.2;
+    if (smooth > 0.75) {
+      var fade = (smooth - 0.75) / 0.25;
       reveal.style.opacity = 1 - fade;
     }
 
-    // Hide hint
-    if (hint && smoothProgress > 0.02) {
+    if (hint && smooth > 0.01) {
       hint.style.opacity = "0";
     }
 
-    if (smoothProgress > 0.98) {
+    if (smooth > 0.97) {
       finish();
       return;
     }
 
-    requestAnimationFrame(render);
+    raf = requestAnimationFrame(tick);
   }
 
   function finish() {
@@ -66,49 +55,37 @@
     document.body.style.overflow = "";
     reveal.style.opacity = "0";
     reveal.style.pointerEvents = "none";
-    setTimeout(function () {
-      reveal.remove();
-    }, 400);
+    setTimeout(function () { reveal.remove(); }, 500);
   }
 
-  // Capture wheel events to drive progress
-  function onWheel(e) {
+  reveal.addEventListener("wheel", function (e) {
     if (done) return;
     e.preventDefault();
-    totalDelta += Math.abs(e.deltaY);
-    progress = Math.min(totalDelta / targetDelta, 1);
-  }
+    accumulated += Math.abs(e.deltaY);
+    progress = Math.min(accumulated / totalNeeded, 1);
+  }, { passive: false });
 
-  // Capture touch for mobile
-  var touchStartY = 0;
-  function onTouchStart(e) {
-    touchStartY = e.touches[0].clientY;
-  }
-  function onTouchMove(e) {
+  var lastTouchY = 0;
+  reveal.addEventListener("touchstart", function (e) {
+    lastTouchY = e.touches[0].clientY;
+  }, { passive: true });
+  reveal.addEventListener("touchmove", function (e) {
     if (done) return;
     e.preventDefault();
-    var dy = touchStartY - e.touches[0].clientY;
+    var dy = lastTouchY - e.touches[0].clientY;
     if (dy > 0) {
-      totalDelta += dy;
-      progress = Math.min(totalDelta / targetDelta, 1);
+      accumulated += dy * 2;
+      progress = Math.min(accumulated / totalNeeded, 1);
     }
-    touchStartY = e.touches[0].clientY;
-  }
+    lastTouchY = e.touches[0].clientY;
+  }, { passive: false });
 
-  reveal.addEventListener("wheel", onWheel, { passive: false });
-  reveal.addEventListener("touchstart", onTouchStart, { passive: true });
-  reveal.addEventListener("touchmove", onTouchMove, { passive: false });
-
-  // Click to skip
   reveal.addEventListener("click", finish);
 
-  // Start render loop
-  requestAnimationFrame(render);
-  // Keep it running
-  (function loop() {
-    if (!done) {
-      requestAnimationFrame(render);
-      requestAnimationFrame(loop);
-    }
-  })();
+  raf = requestAnimationFrame(tick);
+  // Keep loop alive
+  var interval = setInterval(function () {
+    if (done) { clearInterval(interval); return; }
+    raf = requestAnimationFrame(tick);
+  }, 16);
 })();
