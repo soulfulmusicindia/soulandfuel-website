@@ -45,6 +45,49 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ---------- logo reveal (homepage only) ---------- */
+.logo-reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+  transition: opacity 0.5s var(--ease);
+}
+.logo-reveal.is-done {
+  opacity: 0;
+  pointer-events: none;
+}
+.logo-reveal-mask {
+  width: 100vw;
+  height: 100vh;
+  -webkit-mask-image: url('images/logo/horizontal-black.png');
+  mask-image: url('images/logo/horizontal-black.png');
+  -webkit-mask-size: 35vw auto;
+  mask-size: 35vw auto;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  will-change: -webkit-mask-size, mask-size;
+}
+.logo-reveal-content {
+  width: 100%;
+  height: 100%;
+  background-image: url('images/hero-architecture.jpg');
+  background-size: cover;
+  background-position: center;
+}
+@media (max-width: 768px) {
+  .logo-reveal-mask {
+    -webkit-mask-size: 70vw auto;
+    mask-size: 70vw auto;
+  }
+}
+
 /* ---------- preloader ---------- */
 .preloader {
   position: fixed;
