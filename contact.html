@@ -26,10 +26,6 @@
 <meta name="twitter:image" content="https://www.soulandfuel.com/images/projects/tata-promont/dsc06603.jpg">
 </head>
 <body>
-<div class="preloader">
-  <div class="preloader-dot"></div>
-  <span class="preloader-counter">0%</span>
-  <span class="preloader-brand">Soul & Fuel</span>
 </div>
 
 <header class="site-nav is-solid">
@@ -64,8 +60,39 @@
     <p style="margin-top:30px;color:var(--slate);font-size:14px;">Based in Bengaluru. Travels for the right project.</p>
   </div>
 
-  <div class="reveal" style="width:100%;">
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfrPuafGfUtzDF_qyU2s6CQ6d1nfjxX1PjiKlIpH8p5BWXjw/viewform?embedded=true" width="100%" height="700" frameborder="0" marginheight="0" marginwidth="0" style="border:none;border-radius:2px;">Loading…</iframe>
+  <form class="contact-form reveal" action="https://docs.google.com/forms/d/e/1FAIpQLScfrPuafGfUtzDF_qyU2s6CQ6d1nfjxX1PjiKlIpH8p5BWXjw/formResponse" method="POST" target="hidden-form" onsubmit="setTimeout(function(){document.getElementById('form-thanks').style.display='block';document.querySelector('.contact-form').style.display='none';},300)">
+    <div>
+      <label for="name">Name</label>
+      <input type="text" id="name" name="entry.185003630" required>
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="entry.2124794659" required>
+    </div>
+    <div>
+      <label for="phone">Phone number</label>
+      <input type="tel" id="phone" name="entry.955700053" required>
+    </div>
+    <div>
+      <label for="project">Project type</label>
+      <select id="project" name="entry.829075680" required>
+        <option value="" disabled selected>Select one</option>
+        <option>Interior &amp; Architecture</option>
+        <option>Travel</option>
+        <option>Corporate film</option>
+        <option>Something else</option>
+      </select>
+    </div>
+    <div>
+      <label for="message">Tell us about the project</label>
+      <textarea id="message" name="entry.1497969943" required></textarea>
+    </div>
+    <button type="submit" class="btn">Send &rarr;</button>
+  </form>
+  <iframe name="hidden-form" style="display:none;"></iframe>
+  <div id="form-thanks" class="reveal" style="display:none;">
+    <h3 style="font-family:var(--font-soul);font-size:28px;margin-bottom:12px;">Thank you!</h3>
+    <p>Your message has been sent. I'll get back to you within a couple of days.</p>
   </div>
 </section>
 
@@ -90,6 +117,5 @@
 
 <script src="js/main.js" defer></script>
 <script src="js/seo.js" defer></script>
-<script src="js/preloader.js"></script>
 </body>
 </html>
