@@ -96,7 +96,11 @@ Submissions land in your email — no server needed.
 
 The only thing that will slow this site down going forward is unoptimized photos/video — follow the image prep steps above and it'll stay quick.
 
-## 9. Editing the design
+## 9. Producing video with Remotion (optional)
+
+`remotion/` is a self-contained [Remotion](https://remotion.dev) project for building video assets (intros, animated titles, promo clips) with React instead of a traditional editor. It has its own `package.json`/dependencies and is completely separate from the static site above — it doesn't add any framework or build step to the pages themselves. Render a clip there, export the `.mp4`, then use it on the site like any other video (e.g. a hero background or a file you upload to a YouTube playlist). See `remotion/README.md` for setup and usage.
+
+## 10. Editing the design
 
 All colors, type and spacing are defined as CSS variables at the top of `css/style.css`:
 ```css
