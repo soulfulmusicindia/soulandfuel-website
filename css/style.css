@@ -748,6 +748,11 @@ body {
   color: var(--slate);
   margin-top: 16px;
 }
+.deliver-expiry {
+  color: var(--ember);
+  font-weight: 700;
+  white-space: nowrap;
+}
 .deliver-help {
   font-size: 14px;
   color: var(--slate);

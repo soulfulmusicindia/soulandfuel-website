@@ -49,6 +49,17 @@
   .maker-form input:focus,
   .maker-link-row input:focus { outline: none; border-color: var(--ink); }
   .opt { text-transform: none; letter-spacing: 0; font-weight: 500; opacity: 0.7; }
+  .maker-fieldhint {
+    display: block;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--slate);
+    margin-top: 8px;
+  }
   .maker-out { margin-top: 12px; padding-top: 26px; border-top: 1px solid rgba(21, 20, 15, 0.12); }
   .maker-link-row { display: flex; gap: 10px; align-items: stretch; margin-top: 8px; }
   .maker-link-row input { margin-top: 0; }
@@ -92,8 +103,9 @@
     <label>Google Drive folder link
       <input type="url" id="f-drive" placeholder="https://drive.google.com/drive/folders/...">
     </label>
-    <label>Cover image URL <span class="opt">— optional, for a hero photo</span>
-      <input type="url" id="f-cover" placeholder="https://... (leave blank for a clean text layout)">
+    <label>Cover image URL <span class="opt">— optional</span>
+      <input type="url" id="f-cover" placeholder="https://www.soulandfuel.com/images/projects/.../cover.jpg">
+      <span class="maker-fieldhint">Must be a <strong>direct image link</strong> ending in .jpg or .png. Easiest way: open the project on soulandfuel.com, right-click its cover photo &rarr; <strong>Copy image address</strong>, and paste it here. Google Drive links won't work. Leave blank for a clean text-only layout.</span>
     </label>
   </form>
 
