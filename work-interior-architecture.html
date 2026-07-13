@@ -26,7 +26,6 @@
 <meta name="twitter:image" content="https://www.soulandfuel.com/images/projects/tata-promont/dsc06603.jpg">
 </head>
 <body class="parallax-page">
-</div>
 <header class="site-nav is-solid">
   <div class="wrap">
     <a href="index.html" class="logo-mark" aria-label="Soul & Fuel Media home">
@@ -37,6 +36,7 @@
         <li><a href="work-interior-architecture.html" class="is-active">Interior &amp; Architecture</a></li>
         <li><a href="work-travel-films.html">Travel Films</a></li>
         <li><a href="work-corporate-films.html">Corporate Films</a></li>
+        <li><a href="blog.html">Blog</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
@@ -52,13 +52,23 @@
   <h1>Interior &amp; Architecture</h1>
   <p class="dek">Residences, hospitality spaces and studios — shot to hold both the precision of the build and the feeling of standing inside it. Click into a project for the full set.</p>
   <div class="filter-bar">
-    <button class="filter-btn is-active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="residential">Residential</button>
-    <button class="filter-btn" data-filter="commercial">Commercial</button>
+    <div class="filter-group">
+      <button class="filter-btn is-active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="residential">Residential</button>
+      <button class="filter-btn" data-filter="commercial">Commercial</button>
+    </div>
+    <div class="section-jump">
+      <button class="jump-toggle" aria-haspopup="true" aria-expanded="false"><span class="jump-current">Photos</span> <span class="jump-caret">&#9662;</span></button>
+      <ul class="jump-menu">
+        <li><a href="#photos" class="jump-option is-active">Photos</a></li>
+        <li><a href="#films" class="jump-option">Films</a></li>
+        <li><a href="#featured" class="jump-option">Publications</a></li>
+      </ul>
+    </div>
   </div>
 </section>
 
-<section class="project-list-grid wrap">
+<section class="project-list-grid wrap" id="photos">
   <a class="work-tile" data-type="residential" href="project-tata-promont.html">
     <img src="images/projects/tata-promont/dsc06603.jpg" alt="Tata Promont — cover" loading="lazy">
     <div class="work-tile-label">
@@ -401,9 +411,17 @@
   <button class="btn-more-projects">Load more projects &darr;</button>
 </div>
 
-<section class="yt-embed-section wrap">
-  <div class="section-head reveal">
+<section class="yt-embed-section wrap" id="films">
+  <div class="section-head has-jump reveal">
     <h2>Architecture &amp; Interior Films</h2>
+    <div class="section-jump">
+      <button class="jump-toggle" aria-haspopup="true" aria-expanded="false"><span class="jump-current">Films</span> <span class="jump-caret">&#9662;</span></button>
+      <ul class="jump-menu">
+        <li><a href="#photos" class="jump-option">Photos</a></li>
+        <li><a href="#films" class="jump-option is-active">Films</a></li>
+        <li><a href="#featured" class="jump-option">Publications</a></li>
+      </ul>
+    </div>
   </div>
   <div class="video-grid" data-playlist="PLhBdGybqZqT6XJZPgS1c8ZQRnaSYyMTRP" data-per-page="6"></div>
   <div class="load-more-wrap">
@@ -411,9 +429,17 @@
   </div>
 </section>
 
-<section class="editorial-section wrap">
-  <div class="section-head reveal">
-    <h2>Featured In</h2>
+<section class="editorial-section wrap" id="featured">
+  <div class="section-head has-jump reveal">
+    <h2>Publications</h2>
+    <div class="section-jump">
+      <button class="jump-toggle" aria-haspopup="true" aria-expanded="false"><span class="jump-current">Publications</span> <span class="jump-caret">&#9662;</span></button>
+      <ul class="jump-menu">
+        <li><a href="#photos" class="jump-option">Photos</a></li>
+        <li><a href="#films" class="jump-option">Films</a></li>
+        <li><a href="#featured" class="jump-option is-active">Publications</a></li>
+      </ul>
+    </div>
   </div>
   <div class="editorial-grid">
     <a class="editorial-card reveal" href="https://elledecor.in/style-my-kona-babita-sharma-bengaluru-home/" target="_blank" rel="noopener">
@@ -514,6 +540,7 @@
         <li><a href="work-interior-architecture.html">Interior &amp; Architecture</a></li>
         <li><a href="work-travel-films.html">Travel Films</a></li>
         <li><a href="work-corporate-films.html">Corporate Films</a></li>
+        <li><a href="blog.html">Blog</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
