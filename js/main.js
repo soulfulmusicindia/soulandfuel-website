@@ -13,8 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
       nav.classList.remove("is-scrolled");
     }
   };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  if (nav) {
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
 
   if (toggle && links) {
     toggle.addEventListener("click", () => {
