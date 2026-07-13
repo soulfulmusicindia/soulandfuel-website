@@ -60,12 +60,6 @@
     color: var(--slate);
     margin-top: 8px;
   }
-  input[type="file"] { margin-top: 8px; font-family: var(--font-body); font-size: 14px; color: var(--ink); }
-  .cover-preview { display: flex; gap: 14px; align-items: center; margin: 0 0 18px; }
-  .cover-preview img { width: 96px; height: 64px; object-fit: cover; border-radius: 2px; box-shadow: 0 4px 14px rgba(21,20,15,0.15); }
-  .cover-preview-meta { font-family: var(--font-body); font-size: 13px; color: var(--slate); text-transform: none; letter-spacing: 0; font-weight: 400; }
-  #cover-size { display: block; margin-bottom: 6px; }
-  #cover-remove { font-family: var(--font-fuel); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ember); border-bottom: 1px solid var(--ember); }
   .maker-out { margin-top: 12px; padding-top: 26px; border-top: 1px solid rgba(21, 20, 15, 0.12); }
   .maker-link-row { display: flex; gap: 10px; align-items: stretch; margin-top: 8px; }
   .maker-link-row input { margin-top: 0; }
@@ -109,20 +103,9 @@
     <label>Google Drive folder link
       <input type="url" id="f-drive" placeholder="https://drive.google.com/drive/folders/...">
     </label>
-    <label>Cover photo <span class="opt">— optional</span>
-      <input type="file" id="f-coverfile" accept="image/*">
-      <span class="maker-fieldhint">Pick a photo from your computer — it's shrunk to a lightweight preview and <strong>embedded in the link</strong>, so it keeps showing to your client even after you delete the file or disconnect the drive. (Or paste a hosted image URL below instead.)</span>
-    </label>
-    <div class="cover-preview" id="cover-preview" hidden>
-      <img id="cover-thumb" alt="Cover preview">
-      <div class="cover-preview-meta">
-        <span id="cover-size"></span>
-        <button type="button" id="cover-remove">Remove photo</button>
-      </div>
-    </div>
-    <label>or hosted image URL <span class="opt">— optional</span>
+    <label>Cover image URL <span class="opt">— optional</span>
       <input type="url" id="f-cover" placeholder="https://www.soulandfuel.com/images/projects/.../cover.jpg">
-      <span class="maker-fieldhint">A <strong>direct image link</strong> ending in .jpg/.png (right-click a photo on soulandfuel.com &rarr; Copy image address). Used only if you haven't picked a photo above. Google Drive links won't work.</span>
+      <span class="maker-fieldhint">A <strong>direct image link</strong> ending in .jpg/.png — e.g. right-click a photo on soulandfuel.com &rarr; <strong>Copy image address</strong>. Leave blank for a clean text-only layout. (Drive links won't work.)</span>
     </label>
   </form>
 
@@ -157,71 +140,13 @@
   var copyBtn = document.getElementById("copy-btn");
   var hint = document.getElementById("hint");
 
-  var coverFile = document.getElementById("f-coverfile");
-  var coverPreview = document.getElementById("cover-preview");
-  var coverThumb = document.getElementById("cover-thumb");
-  var coverSize = document.getElementById("cover-size");
-  var coverRemove = document.getElementById("cover-remove");
-  var embeddedCover = "";           // compressed data URI, embedded in the link
-  var TARGET_BYTES = 26000;         // keeps the whole link comfortably shareable
-
-  // Shrink + compress a picked photo until it fits the byte budget.
-  function compress(img) {
-    var widths = [900, 800, 700, 600, 520];
-    var last = "";
-    for (var i = 0; i < widths.length; i++) {
-      var w = Math.min(widths[i], img.naturalWidth);
-      var c = document.createElement("canvas");
-      c.width = w;
-      c.height = Math.round(img.naturalHeight * (w / img.naturalWidth));
-      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-      for (var q = 0.72; q >= 0.34; q -= 0.06) {
-        last = c.toDataURL("image/jpeg", q);
-        var bytes = Math.ceil((last.length - last.indexOf(",") - 1) * 3 / 4);
-        if (bytes <= TARGET_BYTES) return last;
-      }
-    }
-    return last; // smallest we could make it
-  }
-
-  coverFile.addEventListener("change", function () {
-    var file = coverFile.files && coverFile.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function () {
-      var img = new Image();
-      img.onload = function () {
-        embeddedCover = compress(img);
-        var kb = Math.round(embeddedCover.length * 3 / 4 / 1024);
-        coverThumb.src = embeddedCover;
-        coverSize.textContent = "Embedded preview ready (~" + kb + " KB in the link).";
-        coverPreview.hidden = false;
-        build();
-      };
-      img.onerror = function () {
-        embeddedCover = "";
-        hint.textContent = "That file could not be read as an image. Try a JPG or PNG.";
-      };
-      img.src = reader.result;
-    };
-    reader.readAsDataURL(file);
-  });
-
-  coverRemove.addEventListener("click", function () {
-    embeddedCover = "";
-    coverFile.value = "";
-    coverPreview.hidden = true;
-    build();
-  });
-
   function build() {
     var data = {
       project: f.project.value.trim(),
       client: f.client.value.trim(),
       drive: f.drive.value.trim()
     };
-    if (embeddedCover) data.cover = embeddedCover;
-    else if (f.cover.value.trim()) data.cover = f.cover.value.trim();
+    if (f.cover.value.trim()) data.cover = f.cover.value.trim();
 
     if (!data.project || !data.drive) {
       out.value = "";
@@ -233,9 +158,7 @@
     out.value = link;
     preview.href = link;
     preview.classList.remove("is-off");
-    hint.textContent = link.length > 60000
-      ? "Heads up: this link is long — if it won't send, use the Remove photo option or a smaller cover."
-      : "";
+    hint.textContent = "";
   }
 
   ["project", "client", "drive", "cover"].forEach(function (k) { f[k].addEventListener("input", build); });
