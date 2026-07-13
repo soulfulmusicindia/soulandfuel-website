@@ -1153,6 +1153,10 @@ body { animation: pageIn 0.6s var(--ease) both; }
   flex-wrap: wrap;
 }
 @media (max-width: 540px) {
+  /* centre the filter buttons and let them fit three-across on phones */
+  .filter-bar { justify-content: center; }
+  .filter-group { flex-wrap: wrap; justify-content: center; }
+  .filter-btn { padding: 8px 16px; }
   .section-jump { width: 100%; }
   .jump-toggle { width: 100%; justify-content: space-between; }
   .jump-menu { left: 0; right: 0; width: auto; }
