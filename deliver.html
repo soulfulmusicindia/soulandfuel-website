@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Your Gallery — Soul &amp; Fuel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,500&family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<meta name="theme-color" content="#f3ede3">
+<link rel="icon" href="images/logo/mnemonic-black.png" type="image/png">
+</head>
+<body>
+
+<header class="deliver-nav">
+  <a href="index.html" class="logo-mark" aria-label="Soul & Fuel Media home">
+    <img src="images/logo/horizontal-black.png" alt="Soul & Fuel Media">
+  </a>
+</header>
+
+<section class="deliver wrap">
+  <span class="eyebrow">Client Delivery</span>
+  <h1 class="deliver-title" id="d-title">Your Gallery</h1>
+  <p class="deliver-sub" id="d-sub"></p>
+
+  <div class="deliver-cover" id="d-cover" hidden>
+    <img id="d-cover-img" src="" alt="">
+  </div>
+
+  <p class="deliver-note" id="d-note">Your final edited files are ready — tap the button below to view and download your full-resolution files.</p>
+
+  <a class="btn deliver-btn" id="d-btn" href="#" target="_blank" rel="noopener">View &amp; download your gallery &rarr;</a>
+
+  <p class="deliver-meta" id="d-meta">Full resolution &middot; Delivered via Google Drive &middot; Link active for 60 days</p>
+  <p class="deliver-help">Please keep a backup of your files. Any trouble opening them? <a href="contact.html">Get in touch</a> and we'll sort it out.</p>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <a href="index.html" class="logo-mark"><img src="images/logo/horizontal-black.png" alt="Soul & Fuel Media"></a>
+      <ul class="footer-links">
+        <li><a href="work-interior-architecture.html">Interior &amp; Architecture</a></li>
+        <li><a href="work-travel-films.html">Travel Films</a></li>
+        <li><a href="work-corporate-films.html">Corporate Films</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span data-year></span> Soul &amp; Fuel Media</span>
+      <span><a href="https://instagram.com/soulandfuel_media" target="_blank" rel="noopener">Instagram</a> &middot; <a href="https://www.youtube.com/@SoulandFuel/playlists" target="_blank" rel="noopener">YouTube</a> &middot; <a href="https://in.linkedin.com/in/mahesh91" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  function b64ToUtf8(str) {
+    return decodeURIComponent(
+      atob(str).split("").map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join("")
+    );
+  }
+  function safeHttpUrl(u) {
+    try {
+      var url = new URL(u);
+      return (url.protocol === "https:" || url.protocol === "http:") ? url.href : null;
+    } catch (e) { return null; }
+  }
+
+  var titleEl = document.getElementById("d-title");
+  var subEl = document.getElementById("d-sub");
+  var noteEl = document.getElementById("d-note");
+  var metaEl = document.getElementById("d-meta");
+  var coverWrap = document.getElementById("d-cover");
+  var coverImg = document.getElementById("d-cover-img");
+  var btn = document.getElementById("d-btn");
+
+  var data = null;
+  var raw = location.hash.slice(1);
+  if (raw) { try { data = JSON.parse(b64ToUtf8(raw)); } catch (e) { data = null; } }
+
+  if (!data || !data.project) {
+    titleEl.textContent = "Gallery link incomplete";
+    subEl.style.display = "none";
+    noteEl.textContent = "This delivery link looks incomplete. Please ask Soul & Fuel for a fresh link.";
+    btn.style.display = "none";
+    metaEl.style.display = "none";
+    return;
+  }
+
+  document.title = "Your Gallery — " + data.project + " — Soul & Fuel";
+  titleEl.textContent = data.project;
+
+  if (data.client) { subEl.textContent = "Prepared for " + data.client; }
+  else { subEl.style.display = "none"; }
+
+  var cover = data.cover && safeHttpUrl(data.cover);
+  if (cover) {
+    coverImg.src = cover;
+    coverImg.alt = data.project + " — cover";
+    coverWrap.hidden = false;
+  }
+
+  var drive = data.drive && safeHttpUrl(data.drive);
+  if (drive) { btn.href = drive; }
+  else {
+    btn.style.display = "none";
+    metaEl.textContent = "This delivery link is missing its download URL — please ask for a fresh link.";
+  }
+})();
+</script>
+<script src="js/main.js" defer></script>
+</body>
+</html>
