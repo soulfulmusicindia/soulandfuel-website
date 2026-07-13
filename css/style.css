@@ -769,6 +769,94 @@ body {
   .deliver-note { font-size: 15px; margin-bottom: 20px; }
 }
 
+/* ---- delivery: "while you're here" explore + soft CTAs ---- */
+.explore {
+  border-top: 1px solid rgba(21, 20, 15, 0.1);
+  padding: 54px 0 10px;
+}
+.explore-head { text-align: center; margin-bottom: 32px; }
+.explore-head .eyebrow { display: block; margin-bottom: 10px; }
+.explore-title {
+  font-family: var(--font-soul);
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(26px, 4vw, 40px);
+  margin-bottom: 10px;
+}
+.explore-dek { color: var(--slate); max-width: 460px; margin: 0 auto; }
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.explore-card {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.explore-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease);
+}
+.explore-card:hover img { transform: scale(1.05); }
+.explore-card-label {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 32px 14px 12px;
+  font-family: var(--font-fuel);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: linear-gradient(to top, rgba(21, 20, 15, 0.78), transparent);
+}
+.explore-viewall {
+  display: block;
+  text-align: center;
+  font-family: var(--font-fuel);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ember);
+  margin-bottom: 48px;
+}
+.explore-nudges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  border-top: 1px solid rgba(21, 20, 15, 0.1);
+  padding-top: 38px;
+}
+.nudge h3 {
+  font-family: var(--font-fuel);
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.nudge p { font-size: 14px; color: var(--slate); line-height: 1.55; margin-bottom: 10px; }
+.nudge a {
+  font-family: var(--font-fuel);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ember);
+  border-bottom: 1px solid var(--ember);
+  padding-bottom: 2px;
+}
+@media (max-width: 760px) {
+  .explore-grid { grid-template-columns: repeat(2, 1fr); }
+  .explore-nudges { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+  .nudge a { display: inline-block; }
+}
+
 /* ============================================================
    FOOTER
    ============================================================ */
