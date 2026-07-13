@@ -29,6 +29,58 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+  // Section jump dropdowns — one per section, each labelled with its own
+  // section; the menu jumps to any section. Multiple can exist on the page.
+  const sectionJumps = Array.from(document.querySelectorAll(".section-jump"));
+  if (sectionJumps.length) {
+    // The mobile nav is taller than --nav-h (logo + links stack), so expose
+    // the measured height for the anchor offset in CSS
+    const setNavActual = () => {
+      document.documentElement.style.setProperty("--nav-actual", nav.offsetHeight + "px");
+    };
+    setNavActual();
+    window.addEventListener("resize", setNavActual, { passive: true });
+    window.addEventListener("load", setNavActual);
+    if ("ResizeObserver" in window) new ResizeObserver(setNavActual).observe(nav);
+
+    const closeAll = (except) => {
+      sectionJumps.forEach((sj) => {
+        if (sj === except) return;
+        sj.classList.remove("is-open");
+        sj.querySelector(".jump-toggle").setAttribute("aria-expanded", "false");
+      });
+    };
+
+    sectionJumps.forEach((sj) => {
+      const toggle = sj.querySelector(".jump-toggle");
+      toggle.addEventListener("click", () => {
+        const willOpen = !sj.classList.contains("is-open");
+        closeAll(sj);
+        sj.classList.toggle("is-open", willOpen);
+        toggle.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      });
+
+      sj.querySelectorAll(".jump-option").forEach((opt) => {
+        const target = document.querySelector(opt.getAttribute("href"));
+        if (!target) return;
+        opt.addEventListener("click", (e) => {
+          e.preventDefault();
+          closeAll(null);
+          const y = target.getBoundingClientRect().top + window.scrollY - (nav.offsetHeight + 16);
+          window.scrollTo({ top: y, behavior: "smooth" });
+          history.replaceState(null, "", opt.getAttribute("href"));
+        });
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".section-jump")) closeAll(null);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeAll(null);
+    });
+  }
+
   // Reveal-on-scroll for sections marked .reveal
   const targets = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window && targets.length) {
