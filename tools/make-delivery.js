@@ -144,7 +144,7 @@ function buildPage(o) {
 '<meta name="robots" content="noindex, nofollow">\n' +
 '<title>Your Gallery — ' + P + ' — Soul &amp; Fuel</title>\n' +
 '<meta property="og:type" content="website">\n' +
-'<meta property="og:title" content="' + P + ' — your gallery from Soul &amp; Fuel">\n' +
+'<meta property="og:title" content="' + P + ' — your gallery from Soul &amp; Fuel Media">\n' +
 '<meta property="og:description" content="' + (C ? "Prepared for " + C + ". " : "") + 'Tap to view and download your full-resolution files.">\n' +
 ogImage +
 '<meta property="og:url" content="' + base + '">\n' +
