@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /
-Disallow: /clients/
 Disallow: /make-delivery.html
 Disallow: /deliver.html
-Disallow: /images/covers/
+# Note: /clients/ delivery pages are intentionally crawlable so link
+# previews (WhatsApp/social thumbnails) work. They stay private via a
+# per-page noindex tag + unguessable URLs, and are not linked anywhere.
 
 Sitemap: https://www.soulandfuel.com/sitemap.xml
