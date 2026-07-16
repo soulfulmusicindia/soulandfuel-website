@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 52 734 172" width="734" height="172">
+  <!-- wordmark -->
+  <text x="20" y="180" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="150" letter-spacing="-5" fill="#161616">Livingetc</text>
+  <!-- erase the font's default i-dots (white on the card's white background) -->
+  <rect x="111" y="40" width="53" height="58" fill="#ffffff"/>
+  <rect x="243" y="40" width="53" height="58" fill="#ffffff"/>
+  <!-- Livingetc's signature colored dots, centered over the i-stems -->
+  <circle cx="137.5" cy="77" r="15" fill="#C4D22E"/>
+  <circle cx="269.1" cy="77" r="15" fill="#A6A5CE"/>
+  <!-- edition line -->
+  <text x="733" y="214" text-anchor="end" font-family="Arial, 'Helvetica Neue', sans-serif" font-weight="700" font-size="21" letter-spacing="2" fill="#161616">INDIA EDITION</text>
+</svg>
