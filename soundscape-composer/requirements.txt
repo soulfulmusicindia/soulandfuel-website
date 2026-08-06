@@ -1,0 +1,6 @@
+librosa>=0.10
+pydub>=0.25
+numpy>=1.24
+soundfile>=0.12
+pretty_midi>=0.2.10
+PyYAML>=6.0

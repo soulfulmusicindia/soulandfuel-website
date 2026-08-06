@@ -1,0 +1,39 @@
+# soundscape-composer configuration
+# All pipeline parameters live here so behaviour can be tuned without touching code.
+
+audio:
+  sample_rate: 44100
+  channels: 1
+
+# Thresholds used by scripts/analyze.py to curate /raw into /processed
+analysis:
+  silence_rms_threshold: 0.01       # below this mean RMS, a clip is considered silence
+  clip_peak_threshold: 0.99         # at/above this peak amplitude, a clip is considered clipped
+  tonal_flatness_threshold: 0.35    # below this spectral flatness, a clip leans tonal
+  tonal_voiced_ratio_threshold: 0.3 # fraction of frames that must be pitch-voiced to call a clip tonal
+
+# Musical parameters used by scripts/process.py and scripts/arrange.py
+musical:
+  scale: "C_minor_pentatonic"       # "<Root>_<scale_name>", see scripts/common.py SCALES
+  tempo_bpm: 92
+  percussive_onset_density_threshold: 3.0  # onsets/sec at/above this -> treated as percussive
+  percussion_hit_duration: 0.4             # seconds captured per one-shot hit
+  max_hits_per_clip: 6                     # cap on one-shots extracted from a single clip
+  bass_pitch_midi_max: 55                  # quantized notes at/below this MIDI number -> bass
+  bass_clip_duration: 1.0                  # seconds
+  pad_clip_duration: 6.0                   # seconds, looped/stretched pad length
+  texture_clip_duration: 8.0               # seconds, looped/stretched texture length
+
+# Arrangement/generative parameters used by scripts/arrange.py
+arrangement:
+  bar_count: 16
+  density: 0.55       # 0-1, probability weight for percussion grid placement
+  complexity: 0.5      # 0-1, controls extra bass hits and number of harmonic bed layers
+
+paths:
+  raw: raw
+  processed: processed
+  stems: stems
+  output: output
+  logs: logs
+  review: review

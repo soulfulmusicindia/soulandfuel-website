@@ -1,0 +1,21 @@
+# Audio and generated artifacts (keep folder structure via .gitkeep)
+raw/*
+!raw/.gitkeep
+processed/*
+!processed/.gitkeep
+!processed/catalog.json
+!processed/catalog.csv
+stems/*/*
+!stems/*/.gitkeep
+output/*
+!output/.gitkeep
+review/*/*
+!review/*/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
