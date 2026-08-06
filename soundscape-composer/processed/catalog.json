@@ -41,6 +41,16 @@
       {
         "category": "percussion",
         "path": "stems/percussion/20260806-124221_0107d71b-Audio_08_06_2026_17_50_22_hit05.wav"
+      },
+      {
+        "category": "texture",
+        "path": "stems/texture/20260806-124221_0107d71b-Audio_08_06_2026_17_50_22_texture.wav"
+      },
+      {
+        "category": "bass",
+        "path": "stems/bass/20260806-124221_0107d71b-Audio_08_06_2026_17_50_22_noisebass29.wav",
+        "midi_note": 29,
+        "source": "pitched_transient"
       }
     ]
   },
@@ -86,6 +96,16 @@
       {
         "category": "percussion",
         "path": "stems/percussion/20260806-124221_6953cccc-Audio_08_06_2026_17_50_42_hit05.wav"
+      },
+      {
+        "category": "texture",
+        "path": "stems/texture/20260806-124221_6953cccc-Audio_08_06_2026_17_50_42_texture.wav"
+      },
+      {
+        "category": "bass",
+        "path": "stems/bass/20260806-124221_6953cccc-Audio_08_06_2026_17_50_42_noisebass29.wav",
+        "midi_note": 29,
+        "source": "pitched_transient"
       }
     ]
   },
@@ -131,6 +151,16 @@
       {
         "category": "percussion",
         "path": "stems/percussion/20260806-124221_77130fdc-Audio_08_06_2026_17_51_23_hit05.wav"
+      },
+      {
+        "category": "texture",
+        "path": "stems/texture/20260806-124221_77130fdc-Audio_08_06_2026_17_51_23_texture.wav"
+      },
+      {
+        "category": "bass",
+        "path": "stems/bass/20260806-124221_77130fdc-Audio_08_06_2026_17_51_23_noisebass29.wav",
+        "midi_note": 29,
+        "source": "pitched_transient"
       }
     ]
   },
@@ -176,6 +206,16 @@
       {
         "category": "percussion",
         "path": "stems/percussion/20260806-124222_cc819cd4-Audio_08_06_2026_17_49_51_hit05.wav"
+      },
+      {
+        "category": "texture",
+        "path": "stems/texture/20260806-124222_cc819cd4-Audio_08_06_2026_17_49_51_texture.wav"
+      },
+      {
+        "category": "bass",
+        "path": "stems/bass/20260806-124222_cc819cd4-Audio_08_06_2026_17_49_51_noisebass29.wav",
+        "midi_note": 29,
+        "source": "pitched_transient"
       }
     ]
   },
@@ -221,6 +261,16 @@
       {
         "category": "percussion",
         "path": "stems/percussion/20260806-124222_f69df860-Audio_08_06_2026_17_51_03_hit05.wav"
+      },
+      {
+        "category": "texture",
+        "path": "stems/texture/20260806-124222_f69df860-Audio_08_06_2026_17_51_03_texture.wav"
+      },
+      {
+        "category": "bass",
+        "path": "stems/bass/20260806-124222_f69df860-Audio_08_06_2026_17_51_03_noisebass29.wav",
+        "midi_note": 29,
+        "source": "pitched_transient"
       }
     ]
   }
