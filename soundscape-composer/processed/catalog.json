@@ -1,0 +1,227 @@
+[
+  {
+    "filename": "20260806-124221_0107d71b-Audio_08_06_2026_17_50_22.wav",
+    "duration_sec": 3.5,
+    "rms_mean": 0.0196,
+    "peak": 0.80502,
+    "spectral_centroid_hz": 2343.67,
+    "spectral_flatness": 0.00953,
+    "onset_density_per_sec": 6.571,
+    "tempo_bpm": 0.0,
+    "dominant_pitch_hz": 65.79,
+    "dominant_pitch_class": "C2",
+    "voiced_ratio": 0.119,
+    "is_tonal": false,
+    "is_silent": false,
+    "is_clipped": false,
+    "usable": true,
+    "location": "processed",
+    "staged_to_stems": true,
+    "stems": [
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_0107d71b-Audio_08_06_2026_17_50_22_hit00.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_0107d71b-Audio_08_06_2026_17_50_22_hit01.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_0107d71b-Audio_08_06_2026_17_50_22_hit02.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_0107d71b-Audio_08_06_2026_17_50_22_hit03.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_0107d71b-Audio_08_06_2026_17_50_22_hit04.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_0107d71b-Audio_08_06_2026_17_50_22_hit05.wav"
+      }
+    ]
+  },
+  {
+    "filename": "20260806-124221_6953cccc-Audio_08_06_2026_17_50_42.wav",
+    "duration_sec": 4.859,
+    "rms_mean": 0.01001,
+    "peak": 0.2634,
+    "spectral_centroid_hz": 2342.19,
+    "spectral_flatness": 0.00853,
+    "onset_density_per_sec": 8.85,
+    "tempo_bpm": 0.0,
+    "dominant_pitch_hz": 65.79,
+    "dominant_pitch_class": "C2",
+    "voiced_ratio": 0.055,
+    "is_tonal": false,
+    "is_silent": false,
+    "is_clipped": false,
+    "usable": true,
+    "location": "processed",
+    "staged_to_stems": true,
+    "stems": [
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_6953cccc-Audio_08_06_2026_17_50_42_hit00.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_6953cccc-Audio_08_06_2026_17_50_42_hit01.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_6953cccc-Audio_08_06_2026_17_50_42_hit02.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_6953cccc-Audio_08_06_2026_17_50_42_hit03.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_6953cccc-Audio_08_06_2026_17_50_42_hit04.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_6953cccc-Audio_08_06_2026_17_50_42_hit05.wav"
+      }
+    ]
+  },
+  {
+    "filename": "20260806-124221_77130fdc-Audio_08_06_2026_17_51_23.wav",
+    "duration_sec": 14.785,
+    "rms_mean": 0.01601,
+    "peak": 0.84116,
+    "spectral_centroid_hz": 3695.79,
+    "spectral_flatness": 0.00753,
+    "onset_density_per_sec": 5.14,
+    "tempo_bpm": 0.0,
+    "dominant_pitch_hz": 66.17,
+    "dominant_pitch_class": "C2",
+    "voiced_ratio": 0.144,
+    "is_tonal": false,
+    "is_silent": false,
+    "is_clipped": false,
+    "usable": true,
+    "location": "processed",
+    "staged_to_stems": true,
+    "stems": [
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_77130fdc-Audio_08_06_2026_17_51_23_hit00.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_77130fdc-Audio_08_06_2026_17_51_23_hit01.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_77130fdc-Audio_08_06_2026_17_51_23_hit02.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_77130fdc-Audio_08_06_2026_17_51_23_hit03.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_77130fdc-Audio_08_06_2026_17_51_23_hit04.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124221_77130fdc-Audio_08_06_2026_17_51_23_hit05.wav"
+      }
+    ]
+  },
+  {
+    "filename": "20260806-124222_cc819cd4-Audio_08_06_2026_17_49_51.wav",
+    "duration_sec": 10.658,
+    "rms_mean": 0.04101,
+    "peak": 0.88235,
+    "spectral_centroid_hz": 1800.68,
+    "spectral_flatness": 0.00558,
+    "onset_density_per_sec": 4.785,
+    "tempo_bpm": 0.0,
+    "dominant_pitch_hz": 65.41,
+    "dominant_pitch_class": "C2",
+    "voiced_ratio": 0.182,
+    "is_tonal": false,
+    "is_silent": false,
+    "is_clipped": false,
+    "usable": true,
+    "location": "processed",
+    "staged_to_stems": true,
+    "stems": [
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_cc819cd4-Audio_08_06_2026_17_49_51_hit00.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_cc819cd4-Audio_08_06_2026_17_49_51_hit01.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_cc819cd4-Audio_08_06_2026_17_49_51_hit02.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_cc819cd4-Audio_08_06_2026_17_49_51_hit03.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_cc819cd4-Audio_08_06_2026_17_49_51_hit04.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_cc819cd4-Audio_08_06_2026_17_49_51_hit05.wav"
+      }
+    ]
+  },
+  {
+    "filename": "20260806-124222_f69df860-Audio_08_06_2026_17_51_03.wav",
+    "duration_sec": 4.911,
+    "rms_mean": 0.02015,
+    "peak": 0.7579,
+    "spectral_centroid_hz": 3273.15,
+    "spectral_flatness": 0.01113,
+    "onset_density_per_sec": 3.665,
+    "tempo_bpm": 0.0,
+    "dominant_pitch_hz": 932.33,
+    "dominant_pitch_class": "A\u266f5",
+    "voiced_ratio": 0.094,
+    "is_tonal": false,
+    "is_silent": false,
+    "is_clipped": false,
+    "usable": true,
+    "location": "processed",
+    "staged_to_stems": true,
+    "stems": [
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_f69df860-Audio_08_06_2026_17_51_03_hit00.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_f69df860-Audio_08_06_2026_17_51_03_hit01.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_f69df860-Audio_08_06_2026_17_51_03_hit02.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_f69df860-Audio_08_06_2026_17_51_03_hit03.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_f69df860-Audio_08_06_2026_17_51_03_hit04.wav"
+      },
+      {
+        "category": "percussion",
+        "path": "stems/percussion/20260806-124222_f69df860-Audio_08_06_2026_17_51_03_hit05.wav"
+      }
+    ]
+  }
+]

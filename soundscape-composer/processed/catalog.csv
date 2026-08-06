@@ -1,0 +1,6 @@
+dominant_pitch_class,dominant_pitch_hz,duration_sec,filename,is_clipped,is_silent,is_tonal,location,onset_density_per_sec,peak,rms_mean,spectral_centroid_hz,spectral_flatness,tempo_bpm,usable,voiced_ratio
+C2,65.79,3.5,20260806-124221_0107d71b-Audio_08_06_2026_17_50_22.wav,False,False,False,processed,6.571,0.80502,0.0196,2343.67,0.00953,0.0,True,0.119
+C2,65.79,4.859,20260806-124221_6953cccc-Audio_08_06_2026_17_50_42.wav,False,False,False,processed,8.85,0.2634,0.01001,2342.19,0.00853,0.0,True,0.055
+C2,66.17,14.785,20260806-124221_77130fdc-Audio_08_06_2026_17_51_23.wav,False,False,False,processed,5.14,0.84116,0.01601,3695.79,0.00753,0.0,True,0.144
+C2,65.41,10.658,20260806-124222_cc819cd4-Audio_08_06_2026_17_49_51.wav,False,False,False,processed,4.785,0.88235,0.04101,1800.68,0.00558,0.0,True,0.182
+A♯5,932.33,4.911,20260806-124222_f69df860-Audio_08_06_2026_17_51_03.wav,False,False,False,processed,3.665,0.7579,0.02015,3273.15,0.01113,0.0,True,0.094
