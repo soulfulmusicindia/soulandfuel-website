@@ -62,13 +62,17 @@ async function main() {
     const outName = file.toLowerCase();
     const outPath = path.join(OUT_DIR, outName);
 
-    const rotated = sharp(srcPath).rotate();
-    const meta = await rotated.metadata();
+    const meta = await sharp(srcPath).rotate().metadata();
     const isPortrait = meta.height > meta.width;
-    const longestSide = Math.max(meta.width, meta.height);
 
-    const resized = sharp(srcPath).rotate().resize(isPortrait ? { height: MAX_DIMENSION } : { width: MAX_DIMENSION });
-    const resizedMeta = await resized.clone().metadata();
+    // Materialize the resize first so we know the REAL output dimensions —
+    // sharp's .metadata() on a pending pipeline still reports the source
+    // image's dimensions, not the resized ones.
+    const resizedBuffer = await sharp(srcPath)
+      .rotate()
+      .resize(isPortrait ? { height: MAX_DIMENSION } : { width: MAX_DIMENSION })
+      .toBuffer();
+    const resizedMeta = await sharp(resizedBuffer).metadata();
     const resizedLongestSide = Math.max(resizedMeta.width, resizedMeta.height);
 
     const watermark = await buildWatermarkBuffer(resizedLongestSide);
@@ -76,7 +80,7 @@ async function main() {
     const marginRight = Math.round(resizedLongestSide * WATERMARK_MARGIN_RIGHT_RATIO);
     const marginBottom = Math.round(resizedLongestSide * WATERMARK_MARGIN_BOTTOM_RATIO);
 
-    await resized
+    await sharp(resizedBuffer)
       .composite([
         {
           input: watermark,
