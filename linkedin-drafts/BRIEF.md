@@ -97,6 +97,14 @@ If a post needs a process detail not listed here, do not guess. Write the post w
 
 Short lines, lots of white space, almost no emoji. The brand is premium and calm, not hustle culture.
 
+## Formatting the hook on LinkedIn
+
+Mahesh wants the opening line set in bold. LinkedIn has no real bold, so the hook is converted to unicode mathematical sans bold characters before pasting. Supply the hook both ways in the draft file: the plain text version and the unicode bold version ready to paste. Only the hook gets this treatment, never the body.
+
+## Tagging
+
+Tag the company page Soul & Fuel Media in the post. It has to be inserted as a real mention in the composer, by typing @ and picking the page from the dropdown, not typed as plain text. A natural closing line such as "Interior and architecture photography at @Soul & Fuel Media." works.
+
 ## Step 7. Output
 
 Write `linkedin-drafts/YYYY-MM-DD.md` containing, in this order: the topic bucket, the hook on its own line, the full post text ready to paste, a second hook option, the image picks with exact paths and reasons, and a short list of anything you guessed that Mahesh should check before posting.
