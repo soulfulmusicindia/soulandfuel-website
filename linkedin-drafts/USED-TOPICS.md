@@ -18,4 +18,4 @@ These were drafted and turned down by Mahesh for being photographer problems rat
 
 - 2026-08-20. Advice to designers. How you can tell in five minutes whether a house will photograph well, and why it has little to do with budget. Image: images/projects/marina-one/dsc03910.jpg
 - 2026-08-20. Advice to clients. How the sun decides the running order of a shoot day, why rooms get about one good hour each, and why orientation should come with the booking. Images: images/projects/the-old-acre/dsc08006.jpg, images/projects/magnolia-resorts/dsc02646.jpg, images/projects/the-old-acre/dji_20250930164903_0181_d.jpg
-- 2026-08-20. Advice to clients. How the sun sets the running order of a shoot day, the five o clock room. Images: images/projects/in-the-hills/dsc05385.jpg, dsc05426.jpg, dsc05595-2.jpg
+- 2026-08-20. Advice to clients. How the sun sets the running order of a shoot day, the five o clock room. Images: images/projects/in-the-hills/dsc05345.jpg, dsc05426.jpg, dsc05595-2.jpg
