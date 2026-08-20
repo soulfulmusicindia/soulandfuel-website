@@ -5,4 +5,15 @@ One line per post. Never repeat a topic or an image listed here.
 - (seeded, already drafted) Mixed colour temperature, and glossy floors bouncing colour onto white walls. Images not recorded.
 - (seeded, already drafted) Getting rooms ready before shoot day, and what an unready room costs. Images not recorded.
 - (seeded, already drafted) Why one interior shoot costs 20,000 and another costs 2 lakh. Images not recorded.
-- 2026-08-20. Bucket 1, Technique. Small bathrooms with nowhere to stand back, and keeping the tripod out of the mirror. Images: images/projects/yolotel/dsc04814.jpg, images/projects/adarsh-lakefront/dsc05851.jpg
+
+## Rejected, do not suggest these again
+
+These were drafted and turned down by Mahesh for being photographer problems rather than subjects his audience cares about, and for sounding put upon. Do not bring them back.
+
+- Small bathrooms with nowhere to stand back, and keeping the tripod out of the mirror
+- Replaced skies and over edited exteriors
+- Ceiling fans getting in the way of the composition
+
+## Drafted and offered, likely to be posted
+
+- 2026-08-20. Advice to designers. How you can tell in five minutes whether a house will photograph well, and why it has little to do with budget. Image: images/projects/marina-one/dsc03910.jpg
