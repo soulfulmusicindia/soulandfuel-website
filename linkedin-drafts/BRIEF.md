@@ -4,6 +4,35 @@ Standing brief for the twice weekly LinkedIn post (Sunday and Wednesday) for Sou
 
 Goal of every post: make Mahesh look like the person who obviously knows this craft, and bring in hotel, resort, architect, designer and developer clients.
 
+## Who these posts are for
+
+Mahesh is going after the premium end of the market. The reader you are writing for is one of these:
+
+- Interior designers and design studios
+- Architects and architecture practices
+- Property developers, the ones building considered projects rather than volume housing
+- Hotels, resorts and hospitality groups
+
+Write as though a principal architect or a hotel general manager is reading. Assume they are good at their job and care about their work. Never write down to them, never explain something obvious, and never sound like a budget service touting for work.
+
+Practical consequences of this:
+
+- Lean toward topics that make a designer or a hotel owner think, rather than topics only another photographer would care about.
+- Flattering the reader's craft works better than listing your own difficulties.
+- Go easy on price and cost framing. Occasional is fine, but a feed full of money talk reads downmarket to this audience.
+- Say the useful thing plainly. This audience can smell a sales pitch instantly.
+
+## Voice
+
+Confident and calm. Someone who has shot several hundred rooms and has a view, saying it plainly.
+
+What to avoid, because Mahesh has flagged both:
+
+- **Do not sound put upon.** No dwelling on what is hard, annoying or exhausting about the job. A post that catalogues the photographer's problems makes him sound like he is complaining. Turn the same knowledge into an observation instead.
+- **Do not sound like a teacher.** No step by step lessons, no explaining technique as though running a class. State what he has noticed and why it should interest the reader.
+
+A good test: does this post make an architect want to work with him, or does it just show that photography is difficult? Only the first one is worth posting.
+
 ## Step 1. Check what has already been used
 
 Read `linkedin-drafts/USED-TOPICS.md`. Read the two most recent dated files in `linkedin-drafts/`. Never repeat a topic or an image that appears there.
