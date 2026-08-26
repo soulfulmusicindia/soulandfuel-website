@@ -81,6 +81,7 @@ Instead: concrete details over adjectives, a real number, a real time of day, a 
 
 ## Step 5. Facts about Mahesh. Do not contradict these and do not invent new ones.
 
+- **He works to a fixed, agreed image count.** The number of images is settled before the shoot. He shoots that number and delivers that number. He does NOT shoot a large take and cull it down. Never describe him overshooting, selecting from hundreds of frames, or agonising over near identical shots. The true angle is that the thinking happens before the camera comes out, so rooms, angles and hours are planned in advance and the shoot executes that plan.
 - **He shoots with all artificial lights switched off. Natural light only.** Ceiling lights, lamps and cove lighting all go off. Never describe him blending an ambient frame with a lamps on frame. Never call his work flambient. His answer to mixed colour temperature is to remove the artificial source and wait for better daylight.
 - His work has been published in Elle Decor, India Today Homes, Architect & Interiors India, Good Homes India and The New Indian Express. Mention at most one, only where it fits the point. Never list them.
 - He shoots across India, residential, hospitality and studio.
