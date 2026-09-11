@@ -50,7 +50,7 @@ async function main() {
   }
   fs.mkdirSync(OUT_DIR, { recursive: true });
 
-  const files = fs.readdirSync(SRC).filter((f) => /\.jpe?g$/i.test(f)).sort();
+  const files = fs.readdirSync(SRC).filter((f) => /\.(jpe?g|png)$/i.test(f)).sort();
   if (!files.length) {
     console.error(`No .jpg/.jpeg files found in ${SRC}`);
     process.exit(1);
@@ -59,7 +59,7 @@ async function main() {
   const results = [];
   for (const file of files) {
     const srcPath = path.join(SRC, file);
-    const outName = file.toLowerCase();
+    const outName = file.toLowerCase().replace(/\.(jpe?g|png)$/i, ".jpg");
     const outPath = path.join(OUT_DIR, outName);
 
     const meta = await sharp(srcPath).rotate().metadata();
