@@ -32,7 +32,7 @@
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",
       "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-      "opens": "09:00",
+      "opens": "09:30",
       "closes": "19:00"
     },
     "sameAs": [
@@ -87,53 +87,6 @@
     }
   };
 
-  var faq = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What types of photography does Soul & Fuel offer?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Soul & Fuel specialises in interior & architecture photography, travel films, and corporate films. We work with residential, commercial, and hospitality clients across India."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Where is Soul & Fuel based?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Soul & Fuel is based in Bengaluru, Karnataka, India. We travel across India and abroad for the right project."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How can I hire Soul & Fuel for a shoot?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "You can reach out via email at mahesh@soulandfuel.com or call +91 7904999975. Tell us about the space, the trip, or the brand and roughly when you need it shot."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Which magazines have featured Soul & Fuel's work?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Soul & Fuel's work has been featured in ELLE Decor India, Architect & Interiors India, Good Homes India, India Today Homes, New Indian Express, and Home Publication."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Does Soul & Fuel shoot outside Bangalore?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, Soul & Fuel is available for shoots across India and internationally. Recent projects include work in Mumbai, Chikmagalur, and Coorg."
-        }
-      }
-    ]
-  };
-
   var website = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -148,9 +101,13 @@
     document.head.appendChild(s);
   }
 
-  inject(org);
+  // Index, About and Contact already carry the full business block in their HTML.
+  // Skip it there so search engines don't see two copies of the same business.
+  var hasStatic = Array.prototype.some.call(
+    document.querySelectorAll('script[type="application/ld+json"]'),
+    function (el) { return el.textContent.indexOf('openingHoursSpecification') !== -1; }
+  );
+  if (!hasStatic) inject(org);
   inject(website);
-  if (document.querySelector(".cat-hero") || document.querySelector(".page-hero") || document.querySelector(".hero")) {
-    inject(faq);
-  }
+  // The FAQ now lives as a visible section on about.html, with its own markup there.
 })();
