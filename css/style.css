@@ -1781,3 +1781,15 @@ body { animation: pageIn 0.6s var(--ease) both; }
 .blog-article ul.body-copy { color: var(--ink); font-size: 17px; margin: 0 0 24px 1.2em; padding: 0; line-height: 1.75; }
 .blog-article ul.body-copy li { margin-bottom: 8px; }
 .blog-article h3 { font-size: 1.15rem; margin: 28px 0 8px; }
+
+/* Blog: make in-text links clearly clickable */
+.blog-article p a, .blog-article li a {
+  color: var(--ember);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.2s var(--ease);
+}
+.blog-article p a:hover, .blog-article li a:hover { color: var(--ink); }
+.blog-article .blog-follow { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--parchment-dim); }
