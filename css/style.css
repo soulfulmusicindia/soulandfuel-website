@@ -1862,3 +1862,9 @@ body { animation: pageIn 0.6s var(--ease) both; }
   .next-project-label { left: 18px; right: 18px; bottom: 18px; }
   .lightbox .next-project { width: min(78vw, 60vh); }
 }
+
+/* ============================================================
+   PROJECT STORY
+   ============================================================ */
+.project-story { padding-top: 30px; padding-bottom: 34px; }
+.project-story p { max-width: 720px; font-size: 16px; line-height: 1.75; color: var(--slate); }
