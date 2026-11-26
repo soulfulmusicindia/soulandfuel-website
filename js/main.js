@@ -180,6 +180,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Next project: shown after the last photo, picked from the listing page so
+  // new projects are included without any extra upkeep.
+  const pageName = (window.location.pathname.split("/").pop() || "").replace(/(\.html)?$/, ".html");
+  const nextProject = /^project-.+\.html$/.test(pageName) ? findNextProject(pageName) : Promise.resolve(null);
+
+  nextProject.then((project) => {
+    const band = document.querySelector(".contact-band");
+    if (!project || !band) return;
+    const section = document.createElement("section");
+    section.className = "next-project-section wrap";
+    section.appendChild(nextProjectCard(project, project.href));
+    band.parentNode.insertBefore(section, band);
+  });
+
   // Lightbox for project grids
   const projectDetailGrid = document.querySelector(".project-grid");
   if (projectDetailGrid) {
@@ -197,13 +211,32 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.appendChild(box);
       const lbImg = box.querySelector("img");
       const counter = box.querySelector(".lightbox-counter");
+      const prevBtn = box.querySelector(".lightbox-prev");
+      const nextBtn = box.querySelector(".lightbox-next");
+      let endCard = null;
+      // Index cells.length is the "next project" screen. No looping either way.
       const show = (i) => {
-        current = (i + cells.length) % cells.length;
+        const last = cells.length - (endCard ? 0 : 1);
+        current = Math.max(0, Math.min(i, last));
+        const atEnd = current === cells.length;
+        box.classList.toggle("is-end", atEnd);
+        prevBtn.hidden = current === 0;
+        nextBtn.hidden = current === last;
+        if (atEnd) {
+          counter.textContent = "";
+          return;
+        }
         const img = cells[current].querySelector("img");
         lbImg.src = img.src;
         lbImg.alt = img.alt;
         counter.textContent = (current + 1) + " / " + cells.length;
       };
+      nextProject.then((project) => {
+        if (!project) return;
+        endCard = nextProjectCard(project, project.href + "#view");
+        box.appendChild(endCard);
+        if (box.classList.contains("is-open")) show(current);
+      });
       cells.forEach((cell, i) => {
         cell.style.cursor = "pointer";
         cell.addEventListener("click", () => { show(i); box.classList.add("is-open"); });
@@ -212,6 +245,12 @@ document.addEventListener("DOMContentLoaded", () => {
       box.querySelector(".lightbox-prev").addEventListener("click", () => show(current - 1));
       box.querySelector(".lightbox-next").addEventListener("click", () => show(current + 1));
       box.addEventListener("click", (e) => { if (e.target === box) box.classList.remove("is-open"); });
+      // Arriving from another project's viewer: carry on in the viewer
+      if (window.location.hash === "#view") {
+        show(0);
+        box.classList.add("is-open");
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
       document.addEventListener("keydown", (e) => {
         if (!box.classList.contains("is-open")) return;
         if (e.key === "Escape") box.classList.remove("is-open");
@@ -307,3 +346,75 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchVideos("");
   });
 });
+
+// Picks the closest unseen project: same type first, then same studio, then
+// same city, then whatever comes next on the listing page.
+function findNextProject(current) {
+  return fetch("work-interior-architecture.html")
+    .then((r) => (r.ok ? r.text() : Promise.reject(r.status)))
+    .then((html) => {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      const all = Array.from(doc.querySelectorAll(".project-list-grid .work-tile")).map((tile) => {
+        const kicker = tile.querySelector(".kicker").textContent.trim();
+        const parts = kicker.split("\u00b7").map((p) => p.trim());
+        const img = tile.querySelector("img");
+        return {
+          href: tile.getAttribute("href"),
+          title: tile.querySelector("h3").textContent.trim(),
+          kicker: kicker,
+          type: tile.dataset.type,
+          city: parts[1],
+          studio: parts[2],
+          img: img.getAttribute("src"),
+          imgStyle: img.getAttribute("style")
+        };
+      });
+      const here = all.findIndex((p) => p.href === current);
+      if (here === -1) return null;
+      const me = all[here];
+
+      let seen = [];
+      try { seen = JSON.parse(sessionStorage.getItem("sf-seen-projects")) || []; } catch (e) {}
+      if (!seen.includes(current)) seen.push(current);
+      let pool = all.filter((p) => !seen.includes(p.href));
+      if (!pool.length) {
+        seen = [current];
+        pool = all.filter((p) => p.href !== current);
+      }
+      try { sessionStorage.setItem("sf-seen-projects", JSON.stringify(seen)); } catch (e) {}
+
+      const score = (p) =>
+        (p.type === me.type ? 4 : 0) +
+        (me.studio && p.studio === me.studio ? 3 : 0) +
+        (p.city === me.city ? 2 : 0);
+      const distance = (p) => (all.indexOf(p) - here + all.length) % all.length;
+      pool.sort((a, b) => score(b) - score(a) || distance(a) - distance(b));
+      return pool[0] || null;
+    })
+    .catch(() => null);
+}
+
+function nextProjectCard(project, href) {
+  const make = (tag, className, text) => {
+    const el = document.createElement(tag);
+    if (className) el.className = className;
+    if (text) el.textContent = text;
+    return el;
+  };
+  const card = make("a", "next-project");
+  card.href = href;
+  const img = make("img");
+  img.src = project.img;
+  img.alt = project.title;
+  img.loading = "lazy";
+  if (project.imgStyle) img.setAttribute("style", project.imgStyle);
+  const label = make("div", "next-project-label");
+  label.append(
+    make("span", "next-project-eyebrow", "Next project"),
+    make("h3", "", project.title),
+    make("span", "next-project-kicker", project.kicker),
+    make("span", "next-project-arrow", "View project \u2192")
+  );
+  card.append(img, label);
+  return card;
+}
