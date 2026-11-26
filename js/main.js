@@ -347,8 +347,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Picks the closest unseen project: same type first, then same studio, then
-// same city, then whatever comes next on the listing page.
+// Picks a random unseen project of the same type (residential or commercial).
 function findNextProject(current) {
   return fetch("work-interior-architecture.html")
     .then((r) => (r.ok ? r.text() : Promise.reject(r.status)))
@@ -356,15 +355,12 @@ function findNextProject(current) {
       const doc = new DOMParser().parseFromString(html, "text/html");
       const all = Array.from(doc.querySelectorAll(".project-list-grid .work-tile")).map((tile) => {
         const kicker = tile.querySelector(".kicker").textContent.trim();
-        const parts = kicker.split("\u00b7").map((p) => p.trim());
         const img = tile.querySelector("img");
         return {
           href: tile.getAttribute("href"),
           title: tile.querySelector("h3").textContent.trim(),
           kicker: kicker,
           type: tile.dataset.type,
-          city: parts[1],
-          studio: parts[2],
           img: img.getAttribute("src"),
           imgStyle: img.getAttribute("style")
         };
@@ -383,13 +379,9 @@ function findNextProject(current) {
       }
       try { sessionStorage.setItem("sf-seen-projects", JSON.stringify(seen)); } catch (e) {}
 
-      const score = (p) =>
-        (p.type === me.type ? 4 : 0) +
-        (me.studio && p.studio === me.studio ? 3 : 0) +
-        (p.city === me.city ? 2 : 0);
-      const distance = (p) => (all.indexOf(p) - here + all.length) % all.length;
-      pool.sort((a, b) => score(b) - score(a) || distance(a) - distance(b));
-      return pool[0] || null;
+      const sameType = pool.filter((p) => p.type === me.type);
+      const choices = sameType.length ? sameType : pool;
+      return choices[Math.floor(Math.random() * choices.length)] || null;
     })
     .catch(() => null);
 }
