@@ -1,5 +1,21 @@
 // Soul & Fuel — minimal, dependency-free interaction layer
 
+// Google Analytics: live site only. The delivery pages are left out because
+// their links carry private client Drive addresses.
+(() => {
+  if (!/(^|\.)soulandfuel\.com$/.test(window.location.hostname)) return;
+  if (/\/(make-)?deliver(y)?(\.html)?$/.test(window.location.pathname)) return;
+  const id = "G-KWJ8QNCGE1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  gtag("js", new Date());
+  gtag("config", id);
+  const tag = document.createElement("script");
+  tag.async = true;
+  tag.src = "https://www.googletagmanager.com/gtag/js?id=" + id;
+  document.head.appendChild(tag);
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
   // Nav: solid background after scrolling past hero
   const nav = document.querySelector(".site-nav");
