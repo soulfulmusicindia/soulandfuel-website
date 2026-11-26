@@ -1868,3 +1868,47 @@ body { animation: pageIn 0.6s var(--ease) both; }
    ============================================================ */
 .project-story { padding-top: 30px; padding-bottom: 34px; }
 .project-story p { font-size: clamp(16px, 1.45vw, 18px); line-height: 1.75; color: var(--slate); text-wrap: pretty; }
+
+/* ============================================================
+   WHATSAPP BUTTON
+   ============================================================ */
+.wa-float {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s var(--ease);
+}
+.wa-float:hover { transform: scale(1.07); }
+.wa-float svg { width: 32px; height: 32px; fill: currentColor; }
+.wa-float-label {
+  position: absolute;
+  right: calc(100% + 10px);
+  white-space: nowrap;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-fuel);
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease);
+}
+.wa-float:hover .wa-float-label,
+.wa-float:focus-visible .wa-float-label { opacity: 1; }
+body:has(.lightbox.is-open) .wa-float { display: none; }
+@media (max-width: 540px) {
+  .wa-float { right: 16px; bottom: 16px; width: 52px; height: 52px; }
+  .wa-float svg { width: 28px; height: 28px; }
+  .wa-float-label { display: none; }
+}
